@@ -68,6 +68,7 @@ public class Client implements Runnable {
 			byte[] idBuffer = new byte[1];
 			in.read(idBuffer);
 			player = new Player(idBuffer[0], name);
+			players.put(idBuffer[0], player);
 			System.out.println("Read");
 			
 			System.out.println("Reading Field Size");
@@ -130,7 +131,18 @@ public class Client implements Runnable {
 						break;
 					}
 					case 0x03: case 0x04: {
-						player.setTeam(code == 0x04);
+						while(true) {
+							player.setTeam(code == 0x03);
+							byte[] buffer = new byte[1];
+							in.read(buffer);
+							if(buffer[0] == 0x00) {
+								break;
+							}
+							Player player = players.get(buffer[0]);
+							buffer = new byte[1];
+							in.read(buffer);
+							player.setTeam(buffer[0] == 0x01);
+						}
 						gameStarted = true;
 						for(val listener : gameStartedListeners) {
 							listener.run();
@@ -180,6 +192,16 @@ public class Client implements Runnable {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+	
+	public void sendInput(boolean up, boolean left, boolean down, boolean right, boolean space) throws IOException {
+		byte input = 0b00000000;
+		input |= up ? 0b10000000 : 0b00000000;
+		input |= left ? 0b01000000 : 0b00000000;
+		input |= down ? 0b00100000 : 0b00000000;
+		input |= right ? 0b00010000 : 0b00000000;
+		input |= space ? 0b00001000 : 0b00000000;
+		out.write(input);
 	}
 	
 	public static interface UserListener {
