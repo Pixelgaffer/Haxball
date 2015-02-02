@@ -66,6 +66,11 @@ public class Serializer
 		return new byte[] { width[0], width[1], width[2], width[3], height[0], height[1], height[2], height[3] };
 	}
 
+	public static byte[] serializePoint (@NonNull Point p)
+	{
+		return serializePoint(ConnectionType.NormalConnection, p);
+	}
+
 	public static byte[] serializePoint (@NonNull ConnectionType type, @NonNull Point p)
 	{
 		if (type == ConnectionType.LaggyConnection)
@@ -96,17 +101,27 @@ public class Serializer
 		return d;
 	}
 
-	public static byte[] serializeState (ConnectionType type, Point ball, byte score0, byte score1, Player ... players)
+	public static byte[] serializeState (Ball ball, byte score0, byte score1, Player ... players)
+	{
+		return serializeState(ConnectionType.NormalConnection, ball, score0, score1, players);
+	}
+
+	public static byte[] serializeState (ConnectionType type, Ball ball, byte score0, byte score1, Player ... players)
 	{
 		if (type == ConnectionType.LaggyConnection)
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.append("{\"ball\":{\"x\":").append(ball.getX()).append(",\"y\":").append(ball.getY()).append("},");
+			sb.append("{\"ball\":{\"x\":").append(ball.getPosition().getX())
+					.append(",\"y\":").append(ball.getPosition().getY())
+					.append(",\"velocity-x\":").append(ball.getVelocity().getX())
+					.append(",\"velocity-y\":").append(ball.getVelocity().getY())
+					.append("},");
 			sb.append("\"score\":\"").append(score0).append(":").append(score1).append("\",");
 			sb.append("\"players\":[");
 			for (Player p : players)
 			{
 				sb.append("{");
+				sb.append("},");
 			}
 			sb.append("]}\0");
 			return sb.toString().getBytes(StandardCharsets.UTF_8);
@@ -116,7 +131,8 @@ public class Serializer
 		baos.write(0xff);
 		baos.write(score0);
 		baos.write(score1);
-		baos.write(serializePoint(ball));
+		baos.write(serializePoint(ball.getPosition()), 0, 8);
+		baos.write(serializePoint(ball.getVelocity()), 0, 8);
 
 		return baos.toByteArray();
 	}
