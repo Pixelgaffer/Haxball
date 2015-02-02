@@ -78,7 +78,7 @@ public class ConnectionHandler implements Runnable
 					break;
 				case 2:
 					type = ConnectionType.LaggyConnection;
-					out.write(("{ \"id\": " + id + "}").getBytes(StandardCharsets.UTF_8));
+					out.write(("{\"id\":" + id + "}\0").getBytes(StandardCharsets.UTF_8));
 					break;
 				default:
 					throw new IOException("Unknown type: " + typeInt);
