@@ -73,8 +73,17 @@ public class Serializer
 					.getBytes(StandardCharsets.UTF_8);
 
 		byte x[] = floatToByteArray(p.getX());
-		byte y[] = floatToByteArray(p.getY())
+		byte y[] = floatToByteArray(p.getY());
 		return new byte[] { x[0], x[1], x[2], x[3], y[0], y[1], y[2], y[3] };
+	}
+	
+	public static Point deserializePoint(@NonNull byte[] data) {
+		Point point = new Point();
+		byte[] b = {data[0], data[1], data[2], data[3]};
+		point.setX(byteArrayToFloat(b));
+		b = new byte[] {data[4], data[5], data[6], data[7]};
+		point.setY(byteArrayToFloat(b));
+		return point;
 	}
 
 	public static Dimension deserializeDimension (@NonNull byte data[])
