@@ -18,7 +18,20 @@
  */
 package haxball.util;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@RequiredArgsConstructor
 public class Player
 {
-	
+	@NonNull @Getter
+	private byte id;
+
+	@NonNull @Getter
+	private String name;
+
+	@NonNull @Getter @Setter
+	private Point position;
 }

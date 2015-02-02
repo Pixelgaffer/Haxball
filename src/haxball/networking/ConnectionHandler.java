@@ -19,6 +19,7 @@
 package haxball.networking;
 
 import haxball.util.Dimension;
+import haxball.util.Player;
 import haxball.util.Serializer;
 import lombok.Getter;
 import lombok.NonNull;
@@ -49,6 +50,9 @@ public class ConnectionHandler implements Runnable
 
 	@Getter
 	private String name;
+
+	@Getter
+	private Player player;
 
 	@Getter
 	private boolean gameStarted = false;
@@ -104,7 +108,7 @@ public class ConnectionHandler implements Runnable
 		}
 	}
 
-	public void playerConnected (String name) throws IOException
+	public void playerConnected (Player player) throws IOException
 	{
 		if (isGameStarted())
 			throw new IllegalStateException();
@@ -115,20 +119,21 @@ public class ConnectionHandler implements Runnable
 		out.flush();
 	}
 
-	public void playerDisconnected (String name) throws IOException
+	public void playerDisconnected (Player player) throws IOException
 	{
 		if (isGameStarted())
 			throw new IllegalStateException();
 		out.write(0x02);
-		byte b[] = name.getBytes(StandardCharsets.UTF_8);
-		out.write(Serializer.intToByteArray(b.length));
-		out.write(b);
+		out.write(player.getId());
 		out.flush();
 	}
 
-	public void startGame () throws IOException
+	public void startGame (boolean team0) throws IOException
 	{
-		out.write(0x03);
+		if (team0)
+			out.write(0x03);
+		else
+			out.write(0x04);
 		gameStarted = true;
 	}
 
