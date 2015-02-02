@@ -34,4 +34,7 @@ public class Player
 
 	@NonNull @Getter @Setter
 	private Point position;
+	
+	@NonNull @Getter @Setter
+	private Point velocity;
 }
