@@ -82,11 +82,12 @@ public class Serializer
 		return new byte[] { x[0], x[1], x[2], x[3], y[0], y[1], y[2], y[3] };
 	}
 	
-	public static Point deserializePoint(@NonNull byte[] data) {
+	public static Point deserializePoint (@NonNull byte[] data)
+	{
 		Point point = new Point();
-		byte[] b = {data[0], data[1], data[2], data[3]};
+		byte[] b = { data[0], data[1], data[2], data[3] };
 		point.setX(byteArrayToFloat(b));
-		b = new byte[] {data[4], data[5], data[6], data[7]};
+		b = new byte[] { data[4], data[5], data[6], data[7] };
 		point.setY(byteArrayToFloat(b));
 		return point;
 	}
@@ -101,12 +102,12 @@ public class Serializer
 		return d;
 	}
 
-	public static byte[] serializeState (Ball ball, byte score0, byte score1, Player ... players)
+	public static byte[] serializeState (Ball ball, byte score0, byte score1, Player... players)
 	{
 		return serializeState(ConnectionType.NormalConnection, ball, score0, score1, players);
 	}
 
-	public static byte[] serializeState (ConnectionType type, Ball ball, byte score0, byte score1, Player ... players)
+	public static byte[] serializeState (ConnectionType type, Ball ball, byte score0, byte score1, Player... players)
 	{
 		if (type == ConnectionType.LaggyConnection)
 		{
@@ -120,7 +121,11 @@ public class Serializer
 			sb.append("\"players\":[");
 			for (Player p : players)
 			{
-				sb.append("{");
+				sb.append("{\"id\":").append(p.getId())
+						.append(",\"x\":").append(p.getPosition().getX())
+						.append(",\"y\":").append(p.getPosition().getY())
+						.append(",\"velocity-x\":").append(p.getVelocity().getX())
+						.append(",\"velocity-y\":").append(p.getVelocity().getY());
 				sb.append("},");
 			}
 			sb.append("]}\0");
@@ -133,6 +138,13 @@ public class Serializer
 		baos.write(score1);
 		baos.write(serializePoint(ball.getPosition()), 0, 8);
 		baos.write(serializePoint(ball.getVelocity()), 0, 8);
+		for (Player p : players)
+		{
+			baos.write(p.getId());
+			baos.write(serializePoint(ball.getPosition()), 0, 8);
+			baos.write(serializePoint(ball.getVelocity()), 0, 8);
+		}
+		baos.write(0x00);
 
 		return baos.toByteArray();
 	}
