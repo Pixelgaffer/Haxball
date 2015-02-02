@@ -1,6 +1,10 @@
 
+from networking import Net
+
 from vec2d import Vec2d
 from curses import wrapper
+
+
 import time
 #player = """
 #/#\\
@@ -11,6 +15,10 @@ import time
 playerSprite = """
 /#\\
 \\#/"""[1:]
+
+playerKickinSprite = """
+/O\\
+\\O/"""[1:]
 
 ballSprite = """
 /X\\
@@ -73,6 +81,21 @@ def main(stdscr):
 	my, mx = stdscr.getmaxyx()
 	s = str(mx)+"x"+str(my)
 	stdscr.addstr(0, mx-(len(s)+1), s)
+
+
+	s = "Connecting to server..."
+	stdscr.addstr(int(my/2), int(mx/2 - len(s)/2), s)
+	stdscr.refresh()
+	net = Net()
+	while not net.serverInitialized:
+		time.sleep(1.0)
+
+	stdscr.clear()
+	s = "Waiting for start signal..."
+	stdscr.addstr(int(my/2), int(mx/2 - len(s)/2), s)
+	stdscr.refresh()
+	while not net.started:
+		time.sleep(1.0)
 
 	b = Board(stdscr)
 	while True:
