@@ -41,6 +41,8 @@ public class Server implements Runnable
 	@Getter
 	private boolean gameStarted = false;
 
+	private byte currentId = Byte.MIN_VALUE;
+
 	public void startGame ()
 	{
 		gameStarted = true;
@@ -53,6 +55,7 @@ public class Server implements Runnable
 
 		try ( ServerSocket server = new ServerSocket(getPort()) )
 		{
+			System.out.println("Server opened sucessfully on port " + getPort());
 			while (!server.isClosed() && !isGameStarted())
 			{
 				Socket client = server.accept();
@@ -61,12 +64,18 @@ public class Server implements Runnable
 					client.close();
 					break;
 				}
-				connectionHandlers.add(new ConnectionHandler(client, getFieldSize()));
+				connectionHandlers.add(new ConnectionHandler(client, getFieldSize(), currentId++));
 			}
 		}
 		catch (IOException ioe)
 		{
 			ioe.printStackTrace();
 		}
+	}
+
+	public static void main (String args[])
+	{
+		Server server = new Server(1234, new Dimension(1280, 720));
+		server.run();
 	}
 }
