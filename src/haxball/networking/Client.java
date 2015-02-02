@@ -1,6 +1,8 @@
 package haxball.networking;
 
+import haxball.util.Ball;
 import haxball.util.Dimension;
+import haxball.util.Player;
 import haxball.util.Serializer;
 
 import java.io.IOException;
@@ -27,11 +29,9 @@ public class Client implements Runnable {
 	@Getter
 	private Dimension fieldSize;
 	@Getter
-	private byte id;
+	private Player player;
 	@Getter
-	private boolean team;
-	@Getter
-	private Map<Byte, String> names = new HashMap<Byte, String>();
+	private Map<Byte, Player> players = new HashMap<Byte, Player>();
 
 	@Getter
 	private List<UserListener> userAddedListeners = new ArrayList<UserListener>();
@@ -51,6 +51,8 @@ public class Client implements Runnable {
 	private byte score0;
 	@Getter
 	private byte score1;
+	@Getter
+	private Ball ball;
 	
 
 	public Client(String ipAdress, int port, String name) {
@@ -65,7 +67,8 @@ public class Client implements Runnable {
 			System.out.println("Reading id");
 			byte[] idBuffer = new byte[1];
 			in.read(idBuffer);
-			id = idBuffer[0];
+			player = new Player(idBuffer[0], name);
+			players.put(idBuffer[0], player);
 			System.out.println("Read");
 			
 			System.out.println("Reading Field Size");
@@ -110,24 +113,36 @@ public class Client implements Runnable {
 						buffer = new byte[nameLength];
 						in.read(buffer);
 						String name = new String(buffer, StandardCharsets.UTF_8);
-						names.put(uid, name);
+						Player player = new Player(uid, name);
+						players.put(uid, player);
 						for(val listener : userAddedListeners) {
-							listener.userChange(code, names.get(code));
+							listener.userChange(code, players.get(code));
 						}
 						break;
 					}
 					case 0x02: {
 						byte[] buffer = new byte[1];
 						in.read(buffer);
-						String name = names.get(code);
-						names.remove(buffer[0]);
+						Player player = players.get(code);
+						players.remove(buffer[0]);
 						for(val listener : userRemovedListeners) {
-							listener.userChange(code, name);
+							listener.userChange(code, player);
 						}
 						break;
 					}
 					case 0x03: case 0x04: {
-						team = code == 0x04;
+						while(true) {
+							player.setTeam(code == 0x03);
+							byte[] buffer = new byte[1];
+							in.read(buffer);
+							if(buffer[0] == 0x00) {
+								break;
+							}
+							Player player = players.get(buffer[0]);
+							buffer = new byte[1];
+							in.read(buffer);
+							player.setTeam(buffer[0] == 0x01);
+						}
 						gameStarted = true;
 						for(val listener : gameStartedListeners) {
 							listener.run();
@@ -146,8 +161,30 @@ public class Client implements Runnable {
 					score0 = buffer[0];
 					score1 = buffer[1];
 					
-					buffer = new byte[4];
+					buffer = new byte[8];
+					in.read(buffer);
+					ball.setPosition(Serializer.deserializePoint(buffer));
+					buffer = new byte[8];
+					in.read(buffer);
+					ball.setVelocity(Serializer.deserializePoint(buffer));
 					
+					while(true) {
+						buffer = new byte[1];
+						in.read(buffer);
+						if(buffer[0] == 0x00) {
+							break;
+						}
+						Player player = players.get(buffer[0]);
+						buffer = new byte[1];
+						in.read(buffer);
+						player.setShooting(buffer[0] == 0x01);
+						buffer = new byte[8];
+						in.read(buffer);
+						player.setPosition(Serializer.deserializePoint(buffer));
+						buffer = new byte[8];
+						in.read(buffer);
+						player.setVelocity(Serializer.deserializePoint(buffer));
+					}
 				}
 				
 			}
@@ -157,8 +194,18 @@ public class Client implements Runnable {
 		}
 	}
 	
+	public void sendInput(boolean up, boolean left, boolean down, boolean right, boolean space) throws IOException {
+		byte input = 0b00000000;
+		input |= up ? 0b10000000 : 0b00000000;
+		input |= left ? 0b01000000 : 0b00000000;
+		input |= down ? 0b00100000 : 0b00000000;
+		input |= right ? 0b00010000 : 0b00000000;
+		input |= space ? 0b00001000 : 0b00000000;
+		out.write(input);
+	}
+	
 	public static interface UserListener {
-		public void userChange(byte id, String name);
+		public void userChange(byte id, Player player);
 	}
 
 }

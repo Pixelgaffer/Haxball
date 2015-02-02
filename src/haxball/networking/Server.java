@@ -65,6 +65,8 @@ public class Server implements Runnable
 					break;
 				}
 				connectionHandlers.add(new ConnectionHandler(client, getFieldSize(), currentId++));
+				if (currentId == 0)
+					currentId++;
 			}
 		}
 		catch (IOException ioe)
