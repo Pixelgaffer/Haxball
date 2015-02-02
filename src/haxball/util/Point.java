@@ -24,5 +24,5 @@ import lombok.*;
 public class Point
 {
 	@Getter @Setter
-	private int x, y;
+	private float x, y;
 }

@@ -23,25 +23,31 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Serializer
 {
 	public static byte[] intToByteArray (int value)
 	{
-		return new byte[] {
-				(byte)(value >>> 24),
-				(byte)(value >>> 16),
-				(byte)(value >>> 8),
-				(byte)value
-		};
+		return ByteBuffer.allocate(4).putInt(value).array();
 	}
 
 	public static int byteArrayToInt (@NonNull byte data[])
 	{
-		return (((int)data[3]) | (((int)data[2]) << 8) | (((int)data[1]) << 16) | (((int)data[0]) << 24));
+		return ByteBuffer.wrap(data).getInt();
+	}
+
+	public static byte[] floatToByteArray (float value)
+	{
+		return ByteBuffer.allocate(4).putFloat(value).array();
+	}
+
+	public static float byteArrayToFloat (@NonNull byte data[])
+	{
+		return ByteBuffer.wrap(data).getFloat();
 	}
 
 	public static byte[] serializeDimension (@NonNull Dimension d)
@@ -52,7 +58,18 @@ public class Serializer
 	public static byte[] serializeDimension (@NonNull ConnectionType type, @NonNull Dimension d)
 	{
 		if (type == ConnectionType.LaggyConnection)
-			return ("{ \"width\": " + d.getWidth() + ", \"height\": " + d.getHeight() + "}")
+			return ("{ \"width\": " + d.getWidth() + ", \"height\": " + d.getHeight() + "}\0")
+					.getBytes(StandardCharsets.UTF_8);
+
+		byte width[] = intToByteArray(d.getWidth());
+		byte height[] = intToByteArray(d.getHeight());
+		return new byte[] { width[0], width[1], width[2], width[3], height[0], height[1], height[2], height[3] };
+	}
+
+	public static byte[] serializePoint (@NonNull ConnectionType type, @NonNull Point p)
+	{
+		if (type == ConnectionType.LaggyConnection)
+			return ("{ \"x\": " + p.getX() + ", \"y\": " + p.getY() + "}\0")
 					.getBytes(StandardCharsets.UTF_8);
 
 		byte width[] = intToByteArray(d.getWidth());
@@ -70,8 +87,12 @@ public class Serializer
 		return d;
 	}
 
-	public static byte[] serializeState (Point ball, byte score0, byte score1, HashMap<Byte, >)
+	public static byte[] serializeState (Point ball, byte score0, byte score1, Player ... players)
 	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		baos.write(0xff);
+		baos.write();
 
+		return baos.toByteArray();
 	}
 }
