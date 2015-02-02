@@ -1,7 +1,7 @@
 
 from vec2d import Vec2d
 from curses import wrapper
-
+import time
 #player = """
 #/#\\
 #\\#/"""[1:]
@@ -15,8 +15,6 @@ playerSprite = """
 ballSprite = """
 /X\\
 \\X/"""[1:]
-
-MSG = "lel"
 
 
 
@@ -35,7 +33,7 @@ class Board:
 		return max(0, min(self.sizey-1, int(y))), max(0, min(self.sizex-1, int(x)))
 
 	def drawUI(self):
-		pass#self.scr.addstr(0, 0, "Status: " + str(1))
+		self.scr.addstr(0, 0, "Active Players:" + str(len(self.players)))
 
 	def drawEntities(self):
 		offset = self.middle - self.players[0]
@@ -59,9 +57,10 @@ class Board:
 		self.sizey, self.sizex = self.scr.getmaxyx()
 		self.size = Vec2d(self.sizex, self.sizey)
 		self.middle = self.size/2
+		self.scr.clear()
 		self.drawUI()
 		self.drawEntities()
-		self.scr.refresh()
+		self.players[0] += Vec2d(1, 1)
 
 	def updatePlayers(self, l):
 		pass
@@ -79,9 +78,7 @@ def main(stdscr):
 	while True:
 		b.update()
 		stdscr.refresh()
-		stdscr.getkey()
+		time.sleep(0.1)
+		#stdscr.getkey()
 
-try:
-	wrapper(main)
-finally:
-	print(MSG)
+wrapper(main)
