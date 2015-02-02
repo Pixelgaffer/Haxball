@@ -32,9 +32,15 @@ public class Player
 	@NonNull @Getter
 	private String name;
 
-	@NonNull @Getter @Setter
+	@Getter @Setter
 	private Point position;
 	
-	@NonNull @Getter @Setter
+	@Getter @Setter
 	private Point velocity;
+	
+	@Setter @Getter
+	private boolean team;
+	
+	@Getter @Setter
+	private boolean shooting;
 }
