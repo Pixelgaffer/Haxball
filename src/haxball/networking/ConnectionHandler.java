@@ -1,5 +1,5 @@
 /**
- * Server
+ * ConnectionHandler
  *
  * Copyright (C) 2015 Dominic S. Meiser <meiserdo@web.de>
  *
@@ -24,19 +24,25 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.nio.charset.StandardCharsets;
+
+import static haxball.util.Serializer.byteArrayToInt;
+import static haxball.util.Serializer.serializeDimension;
 
 @RequiredArgsConstructor
-public class Server implements Runnable
+public class ConnectionHandler implements Runnable
 {
 	@NonNull @Getter
-	private int port;
+	private Socket socket;
 
 	@NonNull @Getter
 	private Dimension fieldSize;
+
+	@Getter
+	private String name;
 
 	@Getter
 	private boolean gameStarted = false;
@@ -49,20 +55,25 @@ public class Server implements Runnable
 	@Override
 	public void run ()
 	{
-		Deque<ConnectionHandler> connectionHandlers = new ArrayDeque<>();
-
-		try ( ServerSocket server = new ServerSocket(getPort()) )
+		try
 		{
-			while (!server.isClosed() && !isGameStarted())
-			{
-				Socket client = server.accept();
-				if (isGameStarted())
-				{
-					client.close();
-					break;
-				}
-				connectionHandlers.add(new ConnectionHandler(client, getFieldSize()));
-			}
+			InputStream in = socket.getInputStream();
+			OutputStream out = socket.getOutputStream();
+
+			// send dimension size
+			out.write(serializeDimension(getFieldSize()));
+
+			// read name from client
+			byte b[] = new byte[4];
+			if (in.read(b) != 4)
+				throw new IOException();
+			b = new byte[byteArrayToInt(b)];
+			name = new String(b, StandardCharsets.UTF_8);
+
+			// wait until the game has started
+
+			// close socket
+			socket.close();
 		}
 		catch (IOException ioe)
 		{

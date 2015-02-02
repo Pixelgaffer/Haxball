@@ -20,6 +20,7 @@ package haxball.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Serializer
@@ -34,19 +35,19 @@ public class Serializer
 		};
 	}
 
-	public static int byteArrayToInt (byte data[])
+	public static int byteArrayToInt (@NonNull byte data[])
 	{
 		return (((int)data[3]) | (((int)data[2]) << 8) | (((int)data[1]) << 16) | (((int)data[0]) << 24));
 	}
 
-	public static byte[] serializeDimension (Dimension d)
+	public static byte[] serializeDimension (@NonNull Dimension d)
 	{
 		byte width[] = intToByteArray(d.getWidth());
 		byte height[] = intToByteArray(d.getHeight());
 		return new byte[] { width[0], width[1], width[2], width[3], height[0], height[1], height[2], height[3] };
 	}
 
-	public static Dimension deserializeDimension (byte data[])
+	public static Dimension deserializeDimension (@NonNull byte data[])
 	{
 		Dimension d = new Dimension();
 		byte b[] = { data[0], data[1], data[2], data[3] };
