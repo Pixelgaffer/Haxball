@@ -20,7 +20,7 @@ package haxball.util;
 
 import lombok.*;
 
-@AllArgsConstructor @ToString
+@NoArgsConstructor @AllArgsConstructor @ToString
 public class Dimension
 {
 	@Getter @Setter

@@ -36,6 +36,23 @@ public class Serializer
 
 	public static int byteArrayToInt (byte data[])
 	{
-		return (((int)data[3]) | (((int)data[2]) << 8) | (((int)data[1]) <<< 16) | (((int)data[0]) << 24));
+		return (((int)data[3]) | (((int)data[2]) << 8) | (((int)data[1]) << 16) | (((int)data[0]) << 24));
+	}
+
+	public static byte[] serializeDimension (Dimension d)
+	{
+		byte width[] = intToByteArray(d.getWidth());
+		byte height[] = intToByteArray(d.getHeight());
+		return new byte[] { width[0], width[1], width[2], width[3], height[0], height[1], height[2], height[3] };
+	}
+
+	public static Dimension deserializeDimension (byte data[])
+	{
+		Dimension d = new Dimension();
+		byte b[] = { data[0], data[1], data[2], data[3] };
+		d.setWidth(byteArrayToInt(b));
+		b = new byte[] { data[4], data[5], data[6], data[7] };
+		d.setHeight(byteArrayToInt(b));
+		return d;
 	}
 }
