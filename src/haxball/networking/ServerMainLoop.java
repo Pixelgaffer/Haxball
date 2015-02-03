@@ -76,13 +76,13 @@ public class ServerMainLoop implements Runnable {
 					player.getVelocity().setX(Math.max(player.getVelocity().getX() - friction, 0));
 				}
 				if(player.getVelocity().getX() < 0) {
-					player.getVelocity().setX(Math.max(player.getVelocity().getX() - friction, 0));
+					player.getVelocity().setX(Math.min(player.getVelocity().getX() - friction, 0));
 				}
 				if(player.getVelocity().getY() > 0) {
 					player.getVelocity().setY(Math.max(player.getVelocity().getY() - friction, 0));
 				}
 				if(player.getVelocity().getY() < 0) {
-					player.getVelocity().setY(Math.max(player.getVelocity().getY() - friction, 0));
+					player.getVelocity().setY(Math.min(player.getVelocity().getY() - friction, 0));
 				}
 				
 				byte input = player.getLastInput();
