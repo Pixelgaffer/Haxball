@@ -1,6 +1,10 @@
 *.class
 *.iws
 *.sha1
+
+*.pyc
+*.log
+
 out/
 lib/*-javadoc.jar
 lib/*-sources.jar
