@@ -27,7 +27,7 @@ class Net:
 	def recv(self, data):
 		#print('recved', data)
 		d = json.loads(data)
-		print(d)
+		#print(d)
 		if 'id' in d:
 			self.id = d['id']
 		if 'width' in d:

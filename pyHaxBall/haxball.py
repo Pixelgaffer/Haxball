@@ -112,6 +112,6 @@ def main(stdscr):
 			pchar = chr(pressed)
 			net.press(pchar)
 		stdscr.refresh()
-		time.sleep(0.1)
+		time.sleep(1/60) # text-based 60fps crispyness
 
 wrapper(main)
