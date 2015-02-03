@@ -58,12 +58,14 @@ public class Server implements Runnable
 		gameStarted = true;
 
 		// check validity of the players
+		List<Byte> deletedPlayers = new ArrayList<>();
 		players = new ArrayList<>();
 		for (int i = 0; i < connectionHandlers.size(); )
 		{
 			ConnectionHandler handler = connectionHandlers.get(i);
 			if (handler.getSocket().isClosed())
 			{
+				deletedPlayers.add(handler.getId());
 				connectionHandlers.remove(i);
 				continue;
 			}
@@ -77,6 +79,8 @@ public class Server implements Runnable
 		boolean team = true;
 		for (ConnectionHandler handler : connectionHandlers)
 		{
+			for (Byte id : deletedPlayers)
+				handler.playerDisconnected(id);
 			handler.getPlayer().setTeam(team);
 			handler.startGame(team, players);
 			handler.setMainLoop(mainLoop);
@@ -105,6 +109,11 @@ public class Server implements Runnable
 					break;
 				}
 				ConnectionHandler handler = new ConnectionHandler(client, getFieldSize(), getGoals(), currentId++);
+				for (ConnectionHandler h : connectionHandlers)
+				{
+					handler.playerConnected(h.getPlayer());
+					h.playerConnected(handler.getPlayer());
+				}
 				connectionHandlers.add(handler);
 				if (currentId == 0)
 					currentId++;

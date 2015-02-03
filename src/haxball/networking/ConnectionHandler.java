@@ -18,7 +18,10 @@
  */
 package haxball.networking;
 
-import haxball.util.*;
+import haxball.util.Ball;
+import haxball.util.Dimension;
+import haxball.util.Goal;
+import haxball.util.Player;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -123,7 +126,7 @@ public class ConnectionHandler implements Runnable
 			// create player
 			player = new Player(getId(), getName());
 		}
-		catch (IOException ioe)
+		catch (Exception ioe)
 		{
 			ioe.printStackTrace();
 			try
@@ -140,14 +143,24 @@ public class ConnectionHandler implements Runnable
 	{
 		if (isGameStarted())
 			throw new IllegalStateException();
-		out.write(0x01);
-		byte b[] = name.getBytes(StandardCharsets.UTF_8);
-		out.write(Serializer.intToByteArray(b.length));
-		out.write(b);
-		out.flush();
+
+		if (type == ConnectionType.LaggyConnection)
+		{
+			out.write(("{\"connected\":{\"id\":" + player.getId() + ",\"name\":\"" + player.getName() + "\"}}\0")
+					.getBytes(StandardCharsets.UTF_8));
+		}
+		else
+		{
+			out.write(0x01);
+			out.write(player.getId());
+			byte b[] = player.getName().getBytes(StandardCharsets.UTF_8);
+			out.write(b.length);
+			out.write(b);
+			out.flush();
+		}
 	}
 
-	public void playerDisconnected (Player player) throws IOException
+	public void playerDisconnected (Byte id) throws IOException
 	{
 		if (isGameStarted())
 			throw new IllegalStateException();

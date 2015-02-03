@@ -55,17 +55,26 @@ public class ServerMainLoop implements Runnable
 
 	public void keyPressed (@NonNull Player player, byte key)
 	{
+		player.setLastInput(key);
+	}
+
+	private void processInput (@NonNull Player player)
+	{
+		byte key = player.getLastInput();
 		Point pos = player.getPosition();
 		if (pos == null)
 			return;
-		if ((key ^ 0b00_00_00_01) != 0) // W
-			pos.setY(pos.getY() + 0.5f);
-		if ((key ^ 0b00_00_00_10) != 0) // A
-			pos.setX(pos.getX() - 0.5f);
-		if ((key ^ 0b00_00_01_00) != 0) // S
+		if ((key & 0b00_00_00_01) != 0) // W
 			pos.setY(pos.getY() - 0.5f);
-		if ((key ^ 0b00_00_10_00) != 0) // D
+		if ((key & 0b00_00_00_10) != 0) // A
+			pos.setX(pos.getX() - 0.5f);
+		if ((key & 0b00_00_01_00) != 0) // S
+			pos.setY(pos.getY() + 0.5f);
+		if ((key & 0b00_00_10_00) != 0) // D
 			pos.setX(pos.getX() + 0.5f);
+		if ((key & 0b00_01_00_00) != 0) // space
+			if (System.currentTimeMillis() - player.getLastShoot() > 40)
+				player.setLastShoot(System.currentTimeMillis());
 	}
 
 	@Override
@@ -78,6 +87,10 @@ public class ServerMainLoop implements Runnable
 
 		while (!stopped)
 		{
+			// move players
+			for (Player player : players)
+				processInput(player);
+
 			for (ConnectionHandler handler : connectionHandlers)
 				handler.writeState(ball, score0, score1, players);
 
