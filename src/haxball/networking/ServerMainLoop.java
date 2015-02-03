@@ -36,7 +36,7 @@ public class ServerMainLoop implements Runnable
 	private Goal goals[];
 
 	@Getter
-	private Ball ball = new Ball();
+	private Ball ball;
 
 	@NonNull @Getter
 	private Collection<Player> players;
@@ -72,7 +72,10 @@ public class ServerMainLoop implements Runnable
 	public void run ()
 	{
 		System.out.println("ServerMainLoop running");
+
+		ball = new Ball(getFieldSize());
 		byte score0 = 0, score1 = 0;
+
 		while (!stopped)
 		{
 			for (ConnectionHandler handler : connectionHandlers)

@@ -127,7 +127,7 @@ public class Serializer
 					.append(",\"velocity-x\":").append(ball.getVelocity().getX())
 					.append(",\"velocity-y\":").append(ball.getVelocity().getY())
 					.append("},");
-			sb.append("\"score\":\"").append(score0).append(":").append(score1).append("\",");
+			sb.append("\"score\":{\"red\":").append(score0).append(",\"blue\":").append(score1).append("},");
 			sb.append("\"players\":[");
 			for (Player p : players)
 			{
