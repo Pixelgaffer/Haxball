@@ -24,6 +24,7 @@ import haxball.util.Player;
 import haxball.util.Serializer;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,6 +60,9 @@ public class ConnectionHandler implements Runnable
 
 	@Getter
 	private boolean gameStarted = false;
+
+	@Getter @Setter
+	private ServerMainLoop mainLoop;
 
 	public ConnectionHandler (@NonNull Socket socket, @NonNull Dimension fieldSize, @NonNull Goal goals[], byte id)
 	{
@@ -193,13 +197,15 @@ public class ConnectionHandler implements Runnable
 		try
 		{
 			// wait until the game has started
+			while (!isGameStarted())
+			Thread.sleep(10);
 
-			// close socket
-			socket.close();
+			// when the client sends input data, notify the main loop
+			while (!socket.isClosed());
 		}
-		catch (IOException ioe)
+		catch (Exception e)
 		{
-			ioe.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }

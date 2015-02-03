@@ -76,6 +76,7 @@ public class Server implements Runnable
 		{
 			handler.getPlayer().setTeam(team);
 			handler.startGame(team, players);
+			new Thread(handler).start();
 			team = !team;
 		}
 	}
