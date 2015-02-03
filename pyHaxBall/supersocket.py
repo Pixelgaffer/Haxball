@@ -11,14 +11,14 @@ class SuperSocket(threading.Thread):
 		self.packi = 0
 
 	def send(self, msg):
-		print("Sending: ", msg)
+		#print("Sending: ", msg)
 		self.toSend += msg# + "\0"
 		self.packi += 1
 		if not self.packi % self.packsize: self.flush()
 	
 	
 	def flush(self):
-		print("SEND")
+		#print("SEND")
 		try:
 			self.sock.send(bytes(self.toSend, "UTF-8"))
 			self.toSend = ""

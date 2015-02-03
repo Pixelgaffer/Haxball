@@ -28,7 +28,7 @@ ballSprite = """
 
 
 class Board:
-	def __init__(self, scr):
+	def __init__(self, scr, net):
 		self.scr = scr
 		self.sizex, self.sizey = 10, 10
 		self.map = [[0 for ii in range(4)] for i in range(4)]
@@ -36,6 +36,7 @@ class Board:
 						 (Vec2d(15, 15)),
 						 (Vec2d(5,  5)),
 						 (Vec2d(120, 120)) ]
+		self.net = net
 
 	def normPos(self, y, x):
 		return max(0, min(self.sizey-1, int(y))), max(0, min(self.sizex-1, int(x)))
@@ -48,6 +49,11 @@ class Board:
 		for p in self.players:
 			pPos = p + offset
 			self.drawSprite(pPos.y, pPos.x, playerSprite)
+		self.drawGoals(offset)
+
+	def drawGoals(self, offset):
+		for goal in self.net.goals:
+			pass
 
 	def drawSprite(self, y, x, sprite):
 		for i, line in enumerate(sprite.splitlines()):
@@ -98,12 +104,13 @@ def main(stdscr):
 	while not net.started:
 		time.sleep(1.0)
 
-	b = Board(stdscr)
+	b = Board(stdscr, net)
 	while True:
 		b.update()
 		pressed = stdscr.getch()
-		pchar = chr(pressed)
-		net.press(pchar)
+		if pressed != -1:
+			pchar = chr(pressed)
+			net.press(pchar)
 		stdscr.refresh()
 		time.sleep(0.1)
 
