@@ -58,7 +58,7 @@ public class Serializer
 	public static byte[] serializeDimension (@NonNull ConnectionType type, @NonNull Dimension d)
 	{
 		if (type == ConnectionType.LaggyConnection)
-			return ("{ \"width\": " + d.getWidth() + ", \"height\": " + d.getHeight() + "}\0")
+			return ("{\"width\":" + d.getWidth() + ",\"height\":" + d.getHeight() + "}\0")
 					.getBytes(StandardCharsets.UTF_8);
 
 		byte width[] = intToByteArray(d.getWidth());
@@ -102,6 +102,14 @@ public class Serializer
 		return d;
 	}
 
+	public static byte[] serializeGoal (@NonNull Goal goal)
+	{
+		byte start[] = serializePoint(goal.getStart());
+		byte end[] = serializePoint(goal.getEnd());
+		return new byte[] { start[0], start[1], start[2], start[3], start[4], start[5], start[6], start[7], end[0],
+				end[1], end[2], end[3], end[4], end[5], end[6], end[7] };
+	}
+
 	public static byte[] serializeState (Ball ball, byte score0, byte score1, Player... players)
 	{
 		return serializeState(ConnectionType.NormalConnection, ball, score0, score1, players);
@@ -128,6 +136,7 @@ public class Serializer
 						.append(",\"velocity-y\":").append(p.getVelocity().getY());
 				sb.append("},");
 			}
+			sb.deleteCharAt(sb.length() - 1);
 			sb.append("]}\0");
 			return sb.toString().getBytes(StandardCharsets.UTF_8);
 		}

@@ -19,6 +19,7 @@
 package haxball.networking;
 
 import haxball.util.Dimension;
+import haxball.util.Goal;
 import haxball.util.Player;
 import haxball.util.Serializer;
 import lombok.Getter;
@@ -29,8 +30,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 
 import static haxball.util.Serializer.serializeDimension;
+import static haxball.util.Serializer.serializeGoal;
 
 public class ConnectionHandler implements Runnable
 {
@@ -57,7 +60,7 @@ public class ConnectionHandler implements Runnable
 	@Getter
 	private boolean gameStarted = false;
 
-	public ConnectionHandler (@NonNull Socket socket, @NonNull Dimension fieldSize, byte id)
+	public ConnectionHandler (@NonNull Socket socket, @NonNull Dimension fieldSize, @NonNull Goal goals[], byte id)
 	{
 		this.socket = socket;
 		this.fieldSize = fieldSize;
@@ -88,12 +91,37 @@ public class ConnectionHandler implements Runnable
 			out.write(serializeDimension(type, getFieldSize()));
 			out.flush();
 
+			// send goals
+			if (type == ConnectionType.LaggyConnection)
+			{
+				out.write("{\"goals\":[".getBytes(StandardCharsets.UTF_8));
+				for (int i = goals.length - 1; i >= 0; i--)
+				{
+					Goal g = goals[i];
+					out.write(("{\"start\":{\"x\":" + g.getStart().getX() + ",\"y\":" + g.getStart().getY()
+							+ "},\"end\":{\"x\":" + g.getEnd().getX() + ",\"y\":" + g.getEnd().getY() + "}}")
+							.getBytes(StandardCharsets.UTF_8));
+					if (i != 0)
+						out.write(',');
+				}
+				out.write("]}\0".getBytes(StandardCharsets.UTF_8));
+				out.flush();
+			}
+			else
+			{
+				out.write(goals.length);
+				for (Goal g : goals)
+					out.write(serializeGoal(g));
+			}
 			// read name from client
 			byte b[] = new byte[in.read()];
 			if (in.read(b) != b.length)
 				throw new IOException();
 			name = new String(b, StandardCharsets.UTF_8);
 			System.out.println("Connected client " + getSocket() + " as name " + name);
+
+			// create player
+			player = new Player(getId(), getName());
 		}
 		catch (IOException ioe)
 		{
@@ -128,12 +156,34 @@ public class ConnectionHandler implements Runnable
 		out.flush();
 	}
 
-	public void startGame (boolean team0) throws IOException
+	public void startGame (boolean team0, Collection<Player> players) throws IOException
 	{
-		if (team0)
-			out.write(0x03);
+		if (type == ConnectionType.LaggyConnection)
+		{
+			out.write(
+					("{\"team\":\"" + (team0 ? "red" : "blue") + "\",\"members\":[").getBytes(StandardCharsets.UTF_8));
+			StringBuilder sb = new StringBuilder();
+			for (Player p : players)
+			{
+				sb.append("{\"id\":").append(p.getId()).append(",\"team\":\"").append(p.isTeam() ? "red" : "blue")
+						.append("\"},");
+			}
+			out.write(sb.toString().substring(0, sb.length() - 1).getBytes(StandardCharsets.UTF_8));
+			out.write("]}\0".getBytes(StandardCharsets.UTF_8));
+		}
 		else
-			out.write(0x04);
+		{
+			if (team0)
+				out.write(0x03);
+			else
+				out.write(0x04);
+			for (Player p : players)
+			{
+				out.write(p.getId());
+				out.write(p.isTeam() ? 0x01 : 0x02);
+			}
+			out.write(0x00);
+		}
 		gameStarted = true;
 	}
 
