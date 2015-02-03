@@ -87,11 +87,9 @@ class Board:
 			self.updatePlayers(d['players'])
 
 	def updatePlayers(self, l):
-		#with open("lelLog.txt", "a") as f:
-		#	f.write(str(d))
 		self.players = []
 		for player in l:
-			self.players.append((Vec2d(l['x'], l['y'])))
+			self.players.append((Vec2d(player['x'], player['y'])))
 
 
 
