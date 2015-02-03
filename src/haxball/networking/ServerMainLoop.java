@@ -73,8 +73,7 @@ public class ServerMainLoop implements Runnable
 		if ((key & 0b00_00_10_00) != 0) // D
 			pos.setX(pos.getX() + 0.5f);
 		if ((key & 0b00_01_00_00) != 0) // space
-			if (System.currentTimeMillis() - player.getLastShoot() > 40)
-				player.setLastShoot(System.currentTimeMillis());
+			player.setShooting(true);
 	}
 
 	@Override

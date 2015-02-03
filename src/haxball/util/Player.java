@@ -40,8 +40,6 @@ public class Player
 	
 	@Getter @Setter
 	private boolean shooting;
-	@Getter @Setter
-	private long lastShoot;
 
 	@Getter @Setter
 	private byte lastInput;

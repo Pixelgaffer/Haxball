@@ -152,7 +152,7 @@ public class Serializer
 		for (Player p : players)
 		{
 			baos.write(p.getId());
-			baos.write((System.currentTimeMillis() - p.getLastShoot() < 30) ? 0x01 : 0x02);
+			baos.write(p.isShooting() ? 0x01 : 0x02);
 			baos.write(serializePoint(p.getPosition()), 0, 8);
 			baos.write(serializePoint(p.getVelocity()), 0, 8);
 		}
