@@ -30,54 +30,53 @@ import java.util.Collection;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
-public class ServerMainLoop implements Runnable
-{
-	@NonNull @Getter
-	private Dimension fieldSize;
+public class ServerMainLoop implements Runnable {
+    @NonNull
+    @Getter
+    private Dimension fieldSize;
 
-	@NonNull @Getter
-	private Goal goals[];
+    @NonNull
+    @Getter
+    private Goal goals[];
 
-	@Getter
-	private Ball ball;
+    @Getter
+    private Ball ball;
 
-	@NonNull @Getter
-	private Collection<Player>            players;
-	@NonNull @Getter
-	private Collection<ConnectionHandler> connectionHandlers;
+    @NonNull
+    @Getter
+    private Collection<Player> players;
+    @NonNull
+    @Getter
+    private Collection<ConnectionHandler> connectionHandlers;
 
-	private HashMap<Player, ConnectionHandler> handlers;
+    private HashMap<Player, ConnectionHandler> handlers;
 
-	@Getter
-	private boolean stopped;
+    @Getter
+    private boolean stopped;
 
-	public void stop ()
-	{
-		stopped = true;
-	}
+    public void stop() {
+        stopped = true;
+    }
 
-	public void keyPressed (@NonNull Player player, byte key)
-	{
-		player.setLastInput(key);
-	}
-	
-	private float friction = 0.05f;
-	private float speed    = 1f;
+    public void keyPressed(@NonNull Player player, byte key) {
+        player.setLastInput(key);
+    }
 
-	@Override
-	public void run ()
-	{
-		System.out.println("ServerMainLoop running");
+    private float friction = 0.05f;
+    private float speed = 3.0f;
+    private float acceleration = 0.2f;
 
-		ball = new Ball(getFieldSize());
-		byte score0 = 0, score1 = 0;
+    @Override
+    public void run() {
+        System.out.println("ServerMainLoop running");
 
-		while (!stopped)
-		{
-			
-			for (Player player : players)
-			{
-				if (player.getVelocity().getX() > 0)
+        ball = new Ball(getFieldSize());
+        byte score0 = 0, score1 = 0;
+
+        while (!stopped) {
+
+            for (Player player : players) {
+                /*if(player.getVelocity().getX() > 0) {
 				{
 					player.getVelocity().setX(Math.max(player.getVelocity().getX() - friction, 0));
 				}
@@ -92,42 +91,56 @@ public class ServerMainLoop implements Runnable
 				if (player.getVelocity().getY() < 0)
 				{
 					player.getVelocity().setY(Math.min(player.getVelocity().getY() + friction, 0));
-				}
-				
-				byte input = player.getLastInput();
-				
-				if ((input & 0b00_00_00_01) != 0)
-				{
-					player.getVelocity().setY(speed);
-				}
-				if ((input & 0b00_00_00_10) != 0)
-				{
-					player.getVelocity().setX(-speed);
-				}
-				if ((input & 0b00_00_01_00) != 0)
-				{
-					player.getVelocity().setY(-speed);
-				}
-				if ((input & 0b00_00_10_00) != 0)
-				{
-					player.getVelocity().setX(speed);
-				}
-				
-				player.getPosition().setX(player.getPosition().getX() + player.getVelocity().getX());
-				player.getPosition().setY(player.getPosition().getY() + player.getVelocity().getY());
-			}
-			
-			for (ConnectionHandler handler : connectionHandlers)
-				handler.writeState(ball, score0, score1, players);
+				}*/
 
-			try
-			{
-				Thread.sleep(10);
-			}
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
+                player.getVelocity().setX(player.getVelocity().getX() * (1 - friction));
+                player.getVelocity().setY(player.getVelocity().getY() * (1 - friction));
+
+                byte input = player.getLastInput();
+
+                float vx = 0;
+                float vy = 0;
+
+                if ((input & 0b00_00_00_01) != 0) {
+                    vy += speed;
+                }
+                if ((input & 0b00_00_00_10) != 0) {
+                    vx -= speed;
+                }
+                if ((input & 0b00_00_01_00) != 0) {
+                    vy -= speed;
+                }
+                if ((input & 0b00_00_10_00) != 0) {
+                    vx += speed;
+                }
+
+                // Normalize stuff manually because
+
+                float len = (float) Math.sqrt(vx * vx + vy * vy);
+                if (len >= 1) {
+                    vx /= len;
+                    vx *= speed;
+                    vy /= len;
+                    vy *= speed;
+
+                    player.getVelocity().setX(player.getVelocity().getX() + (vx - player.getVelocity().getX())*acceleration);
+                    player.getVelocity().setY(player.getVelocity().getY() + (vy - player.getVelocity().getY())*acceleration);
+                }
+
+
+                player.setX(player.getX() + player.getVelocity().getX());
+                player.setY(player.getY() + player.getVelocity().getY());
+
+
+                for (ConnectionHandler handler : connectionHandlers)
+                    handler.writeState(ball, score0, score1, players);
+
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
