@@ -27,20 +27,23 @@ import java.util.Collection;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
-public class ServerMainLoop implements Runnable
-{
-	@NonNull @Getter
+public class ServerMainLoop implements Runnable {
+	@NonNull
+	@Getter
 	private Dimension fieldSize;
 
-	@NonNull @Getter
+	@NonNull
+	@Getter
 	private Goal goals[];
 
 	@Getter
 	private Ball ball;
 
-	@NonNull @Getter
+	@NonNull
+	@Getter
 	private Collection<Player> players;
-	@NonNull @Getter
+	@NonNull
+	@Getter
 	private Collection<ConnectionHandler> connectionHandlers;
 
 	private HashMap<Player, ConnectionHandler> handlers;
@@ -48,57 +51,57 @@ public class ServerMainLoop implements Runnable
 	@Getter
 	private boolean stopped;
 
-	public void stop ()
-	{
+	public void stop() {
 		stopped = true;
 	}
 
-	public void keyPressed (@NonNull Player player, byte key)
-	{
+	public void keyPressed(@NonNull Player player, byte key) {
 		player.setLastInput(key);
 	}
-
-	private void processInput (@NonNull Player player)
-	{
-		byte key = player.getLastInput();
-		Point pos = player.getPosition();
-		if (pos == null)
-			return;
-		if ((key & 0b00_00_00_01) != 0) // W
-			pos.setY(pos.getY() - 0.5f);
-		if ((key & 0b00_00_00_10) != 0) // A
-			pos.setX(pos.getX() - 0.5f);
-		if ((key & 0b00_00_01_00) != 0) // S
-			pos.setY(pos.getY() + 0.5f);
-		if ((key & 0b00_00_10_00) != 0) // D
-			pos.setX(pos.getX() + 0.5f);
-		if ((key & 0b00_01_00_00) != 0) // space
-			player.setShooting(true);
-	}
+	
+	private float friction = 0.002f;
 
 	@Override
-	public void run ()
-	{
+	public void run() {
 		System.out.println("ServerMainLoop running");
 
 		ball = new Ball(getFieldSize());
 		byte score0 = 0, score1 = 0;
 
-		while (!stopped)
-		{
-			// move players
-			for (Player player : players)
-				processInput(player);
-
+		while (!stopped) {
+			
+			for(Player player : players) {
+				player.getVelocity().setX(player.getVelocity().getX() - friction);
+				player.getVelocity().setY(player.getVelocity().getY() - friction);
+				
+				byte input = player.getLastInput();
+				
+				if((input & 0b00_00_00_01) != 0) {
+					player.getVelocity().setX(0.2f);
+				}
+				if((input & 0b00_00_00_10) != 0) {
+					player.getVelocity().setY(-0.2f);
+				}
+				if((input & 0b00_00_01_00) != 0) {
+					player.getVelocity().setX(-0.2f);
+				}
+				if((input & 0b00_00_10_00) != 0) {
+					player.getVelocity().setY(0.2f);
+				}
+				
+				player.getPosition().setX(player.getPosition().getX() + player.getVelocity().getX());
+				player.getPosition().setY(player.getPosition().getY() + player.getVelocity().getY());
+			}
+			
+			
+			
+			
 			for (ConnectionHandler handler : connectionHandlers)
 				handler.writeState(ball, score0, score1, players);
 
-			try
-			{
+			try {
 				Thread.sleep(10);
-			}
-			catch (InterruptedException e)
-			{
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
