@@ -9,8 +9,7 @@ compile ()
       compile $1/$file
     done
   elif [[ $1 == *.java ]]; then
-    sha="$(echo -n "$(sha1sum $1)")"
-    sha1="${sha:0:40}"
+    sha1="$(echo -n "$(openssl sha1 $1)")"
     if [ -f $1.sha1 ] && [ "$sha1" == "$(cat $1.sha1)" ]; then
       echo -n "$sha1" > $1.sha1
     else
