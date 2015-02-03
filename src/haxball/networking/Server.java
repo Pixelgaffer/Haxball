@@ -50,8 +50,8 @@ public class Server implements Runnable
 
 	private byte currentId = Byte.MIN_VALUE;
 
-	List<ConnectionHandler> connectionHandlers;
-	List<Player>            players;
+	private List<ConnectionHandler> connectionHandlers;
+	private List<Player>            players;
 
 	public void startGame () throws IOException
 	{
