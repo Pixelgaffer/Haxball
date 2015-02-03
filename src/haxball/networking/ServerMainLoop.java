@@ -18,7 +18,10 @@
  */
 package haxball.networking;
 
-import haxball.util.*;
+import haxball.util.Ball;
+import haxball.util.Dimension;
+import haxball.util.Goal;
+import haxball.util.Player;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -27,23 +30,20 @@ import java.util.Collection;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
-public class ServerMainLoop implements Runnable {
-	@NonNull
-	@Getter
+public class ServerMainLoop implements Runnable
+{
+	@NonNull @Getter
 	private Dimension fieldSize;
 
-	@NonNull
-	@Getter
+	@NonNull @Getter
 	private Goal goals[];
 
 	@Getter
 	private Ball ball;
 
-	@NonNull
-	@Getter
-	private Collection<Player> players;
-	@NonNull
-	@Getter
+	@NonNull @Getter
+	private Collection<Player>            players;
+	@NonNull @Getter
 	private Collection<ConnectionHandler> connectionHandlers;
 
 	private HashMap<Player, ConnectionHandler> handlers;
@@ -51,52 +51,65 @@ public class ServerMainLoop implements Runnable {
 	@Getter
 	private boolean stopped;
 
-	public void stop() {
+	public void stop ()
+	{
 		stopped = true;
 	}
 
-	public void keyPressed(@NonNull Player player, byte key) {
+	public void keyPressed (@NonNull Player player, byte key)
+	{
 		player.setLastInput(key);
 	}
 	
 	private float friction = 0.05f;
-	private float speed = 1f;
+	private float speed    = 1f;
 
 	@Override
-	public void run() {
+	public void run ()
+	{
 		System.out.println("ServerMainLoop running");
 
 		ball = new Ball(getFieldSize());
 		byte score0 = 0, score1 = 0;
 
-		while (!stopped) {
+		while (!stopped)
+		{
 			
-			for(Player player : players) {
-				if(player.getVelocity().getX() > 0) {
+			for (Player player : players)
+			{
+				if (player.getVelocity().getX() > 0)
+				{
 					player.getVelocity().setX(Math.max(player.getVelocity().getX() - friction, 0));
 				}
-				if(player.getVelocity().getX() < 0) {
+				if (player.getVelocity().getX() < 0)
+				{
 					player.getVelocity().setX(Math.min(player.getVelocity().getX() + friction, 0));
 				}
-				if(player.getVelocity().getY() > 0) {
+				if (player.getVelocity().getY() > 0)
+				{
 					player.getVelocity().setY(Math.max(player.getVelocity().getY() - friction, 0));
 				}
-				if(player.getVelocity().getY() < 0) {
+				if (player.getVelocity().getY() < 0)
+				{
 					player.getVelocity().setY(Math.min(player.getVelocity().getY() + friction, 0));
 				}
 				
 				byte input = player.getLastInput();
 				
-				if((input & 0b00_00_00_01) != 0) {
+				if ((input & 0b00_00_00_01) != 0)
+				{
 					player.getVelocity().setY(speed);
 				}
-				if((input & 0b00_00_00_10) != 0) {
+				if ((input & 0b00_00_00_10) != 0)
+				{
 					player.getVelocity().setX(-speed);
 				}
-				if((input & 0b00_00_01_00) != 0) {
+				if ((input & 0b00_00_01_00) != 0)
+				{
 					player.getVelocity().setY(-speed);
 				}
-				if((input & 0b00_00_10_00) != 0) {
+				if ((input & 0b00_00_10_00) != 0)
+				{
 					player.getVelocity().setX(speed);
 				}
 				
@@ -104,15 +117,15 @@ public class ServerMainLoop implements Runnable {
 				player.getPosition().setY(player.getPosition().getY() + player.getVelocity().getY());
 			}
 			
-			
-			
-			
 			for (ConnectionHandler handler : connectionHandlers)
 				handler.writeState(ball, score0, score1, players);
 
-			try {
+			try
+			{
 				Thread.sleep(10);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e)
+			{
 				e.printStackTrace();
 			}
 		}

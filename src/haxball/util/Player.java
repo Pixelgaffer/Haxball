@@ -18,19 +18,28 @@
  */
 package haxball.util;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@RequiredArgsConstructor @ToString @EqualsAndHashCode
-public class Player
+@ToString @EqualsAndHashCode(callSuper = true)
+public class Player extends MapObject
 {
-	@NonNull @Getter
+	public static final float RADIUS = 3f / 100f;
+
+	public Player (byte id, String name)
+	{
+		super(RADIUS);
+		this.id = id;
+		this.name = name;
+	}
+
+	@Getter
 	private byte id;
 
-	@NonNull @Getter
+	@Getter
 	private String name;
-
-	@Getter @Setter
-	private Point position = new Point();
 	
 	@Getter @Setter
 	private Point velocity = new Point();
