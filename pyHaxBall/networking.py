@@ -12,9 +12,10 @@ class Net:
 	started = False
 	width, height, id = [None]*3
 	goals = None
+	callback = None
 	pList = []
 	pressedKeys = [0, 0, 0, 0, 0]
-	def __init__(self, ip="127.0.0.1", port=1234, name="deineMudda_lel"):
+	def __init__(self, ip="127.0.0.1", port=1234, name="deineMudda_lel", verbose=True):
 		self.sock = socket()
 		self.sock.connect((ip, port))
 		self.ssock = SuperSocket(self.sock)
@@ -23,11 +24,14 @@ class Net:
 		self.ssock.send(chr(len(name.encode('utf-8'))))
 		self.ssock.send(name)
 		self.ssock.flush()
+		self.verbose = verbose
 
 	def recv(self, data):
-		#print('recved', data)
+		if self.verbose: print('recved', data)
+		#with open("in.txt", "a") as f:
+		#	f.write(data)
 		d = json.loads(data)
-		#print(d)
+		if self.verbose: print(d)
 		if 'id' in d:
 			self.id = d['id']
 		if 'width' in d:
@@ -46,6 +50,11 @@ class Net:
 
 		if self.width is not None and self.height is not None and self.id is not None:
 			self.serverInitialized = True
+
+		if self.callback: self.callback(d)
+
+	def subscribeChanges(self, callback):
+		self.callback = callback
 
 	def press(self, char):
 		self.ssock.send(chr({"w": 1, "a": 2, "s": 4, "d": 8, " ": 16}.get(char, 0)))

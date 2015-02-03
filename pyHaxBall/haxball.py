@@ -37,23 +37,29 @@ class Board:
 						 (Vec2d(5,  5)),
 						 (Vec2d(120, 120)) ]
 		self.net = net
+		self.net.subscribeChanges(self.netChanges)
 
 	def normPos(self, y, x):
 		return max(0, min(self.sizey-1, int(y))), max(0, min(self.sizex-1, int(x)))
 
 	def drawUI(self):
-		self.scr.addstr(0, 0, "Active Players:" + str(len(self.players)))
+		self.scr.addstr(0, 0, "Active Players: " + str(len(self.players)))
 
 	def drawEntities(self):
-		offset = self.middle - self.players[0]
-		for p in self.players:
-			pPos = p + offset
-			self.drawSprite(pPos.y, pPos.x, playerSprite)
-		self.drawGoals(offset)
+		if len(self.players) >= 1:
+			offset = self.middle - self.players[0]
+			for p in self.players:
+				pPos = p + offset
+				self.drawSprite(pPos.y, pPos.x, playerSprite)
+			self.drawGoals(offset)
+		else:
+			s = "Waiting for position updates..."
+			self.scr.addstr(int(self.sizey/2), int(self.sizex/2 - len(s)/2), s)
+			self.scr.refresh()
 
 	def drawGoals(self, offset):
-		for goal in self.net.goals:
-			pass
+		pass#for goal in self.net.goals:
+		#	#print(goal)
 
 	def drawSprite(self, y, x, sprite):
 		for i, line in enumerate(sprite.splitlines()):
@@ -64,7 +70,7 @@ class Board:
 	def log(self, data):
 		self.scr.addstr(0, 0, "{}".format(data))
 		self.scr.refresh()
-		self.scr.getkey()
+		#self.scr.getkey()
 
 
 	def update(self):
@@ -74,10 +80,18 @@ class Board:
 		self.scr.clear()
 		self.drawUI()
 		self.drawEntities()
-		self.players[0] += Vec2d(1, 1)
+		#self.players[0] += Vec2d(0.5, 0.25)
+
+	def netChanges(self, d):
+		if 'players' in d:
+			self.updatePlayers(d['players'])
 
 	def updatePlayers(self, l):
-		pass
+		#with open("lelLog.txt", "a") as f:
+		#	f.write(str(d))
+		self.players = []
+		for player in l:
+			self.players.append((Vec2d(l['x'], l['y'])))
 
 
 
@@ -93,7 +107,7 @@ def main(stdscr):
 	s = "Connecting to server..."
 	stdscr.addstr(int(my/2), int(mx/2 - len(s)/2), s)
 	stdscr.refresh()
-	net = Net()
+	net = Net(verbose=False)
 	while not net.serverInitialized:
 		time.sleep(1.0)
 	stdscr.clear()
