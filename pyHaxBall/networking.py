@@ -11,9 +11,10 @@ class Net:
 	serverInitialized = False
 	started = False
 	width, height, id = [None]*3
+	goals = None
 	pList = []
 	pressedKeys = [0, 0, 0, 0, 0]
-	def __init__(self, ip="10.0.4.34", port=1234, name="deineMudda_lel"):
+	def __init__(self, ip="127.0.0.1", port=1234, name="deineMudda_lel"):
 		self.sock = socket()
 		self.sock.connect((ip, port))
 		self.ssock = SuperSocket(self.sock)
@@ -24,7 +25,7 @@ class Net:
 		self.ssock.flush()
 
 	def recv(self, data):
-		print('recved', data)
+		#print('recved', data)
 		d = json.loads(data)
 		print(d)
 		if 'id' in d:
@@ -33,6 +34,15 @@ class Net:
 			self.width = d['width']
 		if 'height' in d:
 			self.height = d['height']
+		if 'goals' in d:
+			self.goals = d['goals']#swaggy stuff not yet implemented
+
+		if 'team' in d:
+			self.started = True
+			self.team = d['team']
+		if 'members' in d:
+			self.started = True
+			self.members = d['members']
 
 		if self.width is not None and self.height is not None and self.id is not None:
 			self.serverInitialized = True
