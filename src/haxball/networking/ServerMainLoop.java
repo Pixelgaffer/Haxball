@@ -59,7 +59,7 @@ public class ServerMainLoop implements Runnable {
 		player.setLastInput(key);
 	}
 	
-	private float friction = 0.002f;
+	private float friction = 0.01f;
 
 	@Override
 	public void run() {
@@ -71,8 +71,8 @@ public class ServerMainLoop implements Runnable {
 		while (!stopped) {
 			
 			for(Player player : players) {
-				player.getVelocity().setX(player.getVelocity().getX() - friction);
-				player.getVelocity().setY(player.getVelocity().getY() - friction);
+				player.getVelocity().setX(Math.max(player.getVelocity().getX() - friction, 0));
+				player.getVelocity().setY(Math.max(player.getVelocity().getY() - friction, 0));
 				
 				byte input = player.getLastInput();
 				
