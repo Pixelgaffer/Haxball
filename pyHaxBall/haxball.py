@@ -77,6 +77,7 @@ class Board:
 
 def main(stdscr):
 	# Clear screen
+	stdscr.nodelay(1)
 	stdscr.clear()
 	my, mx = stdscr.getmaxyx()
 	s = str(mx)+"x"+str(my)
@@ -89,8 +90,8 @@ def main(stdscr):
 	net = Net()
 	while not net.serverInitialized:
 		time.sleep(1.0)
-
 	stdscr.clear()
+
 	s = "Waiting for start signal..."
 	stdscr.addstr(int(my/2), int(mx/2 - len(s)/2), s)
 	stdscr.refresh()
@@ -100,8 +101,10 @@ def main(stdscr):
 	b = Board(stdscr)
 	while True:
 		b.update()
+		pressed = stdscr.getch()
+		pchar = chr(pressed)
+		net.press(pchar)
 		stdscr.refresh()
 		time.sleep(0.1)
-		#stdscr.getkey()
 
 wrapper(main)

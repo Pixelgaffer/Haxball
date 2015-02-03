@@ -11,6 +11,8 @@ class Net:
 	serverInitialized = False
 	started = False
 	width, height, id = [None]*3
+	pList = []
+	pressedKeys = [0, 0, 0, 0, 0]
 	def __init__(self, ip="10.0.4.34", port=1234, name="deineMudda_lel"):
 		self.sock = socket()
 		self.sock.connect((ip, port))
@@ -34,6 +36,9 @@ class Net:
 
 		if self.width is not None and self.height is not None and self.id is not None:
 			self.serverInitialized = True
+
+	def press(self, char):
+		self.ssock.send(chr({"w": 1, "a": 2, "s": 4, "d": 8, " ": 16}.get(char, 0)))
 
 if __name__ == '__main__':
 	Net()
