@@ -1,3 +1,6 @@
 *.class
 *.iws
+*.sha1
 out/
+lib/*-javadoc.jar
+lib/*-sources.jar
