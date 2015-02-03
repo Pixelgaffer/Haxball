@@ -18,12 +18,9 @@
  */
 package haxball.util;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @ToString @EqualsAndHashCode
 public class Ball
 {
 	@NonNull @Getter @Setter
@@ -31,4 +28,14 @@ public class Ball
 
 	@NonNull @Getter @Setter
 	private Point velocity;
+
+	public Ball ()
+	{
+		this(new Point(), new Point());
+	}
+
+	public Ball (@NonNull Dimension fieldSize)
+	{
+		this(new Point(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Point());
+	}
 }

@@ -18,10 +18,7 @@
  */
 package haxball.networking;
 
-import haxball.util.Dimension;
-import haxball.util.Goal;
-import haxball.util.Player;
-import haxball.util.Serializer;
+import haxball.util.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -33,8 +30,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
-import static haxball.util.Serializer.serializeDimension;
-import static haxball.util.Serializer.serializeGoal;
+import static haxball.util.Serializer.*;
 
 public class ConnectionHandler implements Runnable
 {
@@ -191,6 +187,26 @@ public class ConnectionHandler implements Runnable
 		gameStarted = true;
 	}
 
+	public void writeState (Ball ball, byte score0, byte score1, Collection<Player> players)
+	{
+		try
+		{
+			if (!socket.isClosed())
+				out.write(serializeState(type, ball, score0, score1, players));
+		}
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
+			try
+			{
+				socket.close();
+			}
+			catch (IOException e)
+			{
+			}
+		}
+	}
+
 	@Override
 	public void run ()
 	{
@@ -198,10 +214,17 @@ public class ConnectionHandler implements Runnable
 		{
 			// wait until the game has started
 			while (!isGameStarted())
-			Thread.sleep(10);
+				Thread.sleep(10);
 
 			// when the client sends input data, notify the main loop
-			while (!socket.isClosed());
+			while (!socket.isClosed())
+			{
+				int read = in.read();
+				if (read == -1)
+					socket.close();
+				else
+					getMainLoop().keyPressed(getPlayer(), (byte)read);
+			}
 		}
 		catch (Exception e)
 		{

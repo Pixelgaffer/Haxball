@@ -26,6 +26,7 @@ import lombok.NonNull;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Serializer
@@ -110,12 +111,13 @@ public class Serializer
 				end[1], end[2], end[3], end[4], end[5], end[6], end[7] };
 	}
 
-	public static byte[] serializeState (Ball ball, byte score0, byte score1, Player... players)
+	public static byte[] serializeState (Ball ball, byte score0, byte score1, Collection<Player> players)
 	{
 		return serializeState(ConnectionType.NormalConnection, ball, score0, score1, players);
 	}
 
-	public static byte[] serializeState (ConnectionType type, Ball ball, byte score0, byte score1, Player... players)
+	public static byte[] serializeState (@NonNull ConnectionType type, @NonNull Ball ball, byte score0, byte score1,
+			@NonNull Collection<Player> players)
 	{
 		if (type == ConnectionType.LaggyConnection)
 		{

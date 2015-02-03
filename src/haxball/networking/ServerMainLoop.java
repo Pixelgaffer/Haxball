@@ -18,6 +18,74 @@
  */
 package haxball.networking;
 
-public class ServerMainLoop
+import haxball.util.*;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
+import java.util.HashMap;
+
+@RequiredArgsConstructor
+public class ServerMainLoop implements Runnable
 {
+	@NonNull @Getter
+	private Dimension fieldSize;
+
+	@NonNull @Getter
+	private Goal goals[];
+
+	@Getter
+	private Ball ball = new Ball();
+
+	@NonNull @Getter
+	private Collection<Player> players;
+	@NonNull @Getter
+	private Collection<ConnectionHandler> connectionHandlers;
+
+	private HashMap<Player, ConnectionHandler> handlers;
+
+	@Getter
+	private boolean stopped;
+
+	public void stop ()
+	{
+		stopped = true;
+	}
+
+	public void keyPressed (@NonNull Player player, byte key)
+	{
+		Point pos = player.getPosition();
+		if (pos == null)
+			return;
+		if ((key ^ 0b00_00_00_01) != 0) // W
+			pos.setY(pos.getY() + 0.5f);
+		if ((key ^ 0b00_00_00_10) != 0) // A
+			pos.setX(pos.getX() - 0.5f);
+		if ((key ^ 0b00_00_01_00) != 0) // S
+			pos.setY(pos.getY() - 0.5f);
+		if ((key ^ 0b00_00_10_00) != 0) // D
+			pos.setX(pos.getX() + 0.5f);
+	}
+
+	@Override
+	public void run ()
+	{
+		System.out.println("ServerMainLoop running");
+		byte score0 = 0, score1 = 0;
+		while (!stopped)
+		{
+			for (ConnectionHandler handler : connectionHandlers)
+				handler.writeState(ball, score0, score1, players);
+
+			try
+			{
+				Thread.sleep(10);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
 }

@@ -71,14 +71,21 @@ public class Server implements Runnable
 			i++;
 		}
 
+		// create main loop
+		ServerMainLoop mainLoop = new ServerMainLoop(getFieldSize(), getGoals(), players, connectionHandlers);
+
 		boolean team = true;
 		for (ConnectionHandler handler : connectionHandlers)
 		{
 			handler.getPlayer().setTeam(team);
 			handler.startGame(team, players);
-			new Thread(handler).start();
+			handler.setMainLoop(mainLoop);
+			new Thread(handler, "Handler-" + handler.getName()).start();
 			team = !team;
 		}
+
+		// start main loop
+		new Thread(mainLoop, "MainLoop").start();
 	}
 
 	@Override

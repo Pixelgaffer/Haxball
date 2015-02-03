@@ -34,11 +34,11 @@ public class Client implements Runnable {
 	private Map<Byte, Player> players = new HashMap<Byte, Player>();
 
 	@Getter
-	private List<UserListener> userAddedListeners = new ArrayList<UserListener>();
+	private List<UserListener> userAddedListeners = new ArrayList<>();
 	@Getter
-	private List<UserListener> userRemovedListeners = new ArrayList<UserListener>();
+	private List<UserListener> userRemovedListeners = new ArrayList<>();
 	@Getter
-	private List<Runnable> gameStartedListeners = new ArrayList<Runnable>();
+	private List<Runnable> gameStartedListeners = new ArrayList<>();
 	
 	@Getter
 	@Setter

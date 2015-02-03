@@ -18,12 +18,9 @@
  */
 package haxball.util;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @ToString @EqualsAndHashCode
 public class Player
 {
 	@NonNull @Getter
@@ -33,10 +30,10 @@ public class Player
 	private String name;
 
 	@Getter @Setter
-	private Point position;
+	private Point position = new Point();
 	
 	@Getter @Setter
-	private Point velocity;
+	private Point velocity = new Point();
 	
 	@Setter @Getter
 	private boolean team;
