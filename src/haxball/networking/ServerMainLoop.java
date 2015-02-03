@@ -59,7 +59,7 @@ public class ServerMainLoop implements Runnable {
 		player.setLastInput(key);
 	}
 	
-	private float friction = 0.0075f;
+	private float friction = 0.05f;
 	private float speed = 1f;
 
 	@Override
