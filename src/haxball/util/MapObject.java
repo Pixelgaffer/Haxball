@@ -26,7 +26,7 @@ import lombok.*;
 public class MapObject
 {
 	@Getter
-	private Point position;
+	private Point position = new Point();
 
 	@NonNull @Getter
 	private float radius;
