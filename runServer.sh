@@ -1,6 +1,6 @@
 #!/bin/bash
 
-libs="lib/lombok-1.16.0.jar:lib/jbox2d-library-2.2.1.1.jar"
+libs="lib/lombok-1.16.0.jar:lib/commons-math3-3.2.jar"
 
 compile ()
 {
