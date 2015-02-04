@@ -35,3 +35,5 @@ C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\
 C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.Resources.resources
 C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.vbproj.GenerateResource.Cache
 C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.vbprojResolveAssemblyReference.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\ServerForm.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\ServerForm.g.vb

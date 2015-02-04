@@ -6,7 +6,15 @@ Fußball
 </name>
 </assembly>
 <members>
-<member name="M:Fußball.MainWindow.InitializeComponent">
+<member name="M:Fußball.ServerForm.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="T:Fußball.ServerForm">
+	<summary>
+ServerForm
+</summary>
+</member><member name="M:Fußball.MainWindow.InitializeComponent">
 	<summary>
 InitializeComponent
 </summary>

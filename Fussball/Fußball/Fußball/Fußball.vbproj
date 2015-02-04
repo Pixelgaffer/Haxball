@@ -97,6 +97,10 @@
     <Compile Include="Board.vb" />
     <Compile Include="Client.vb" />
     <Compile Include="Player.vb" />
+    <Compile Include="MyServer.vb" />
+    <Compile Include="ServerForm.xaml.vb">
+      <DependentUpon>ServerForm.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,6 +115,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ServerForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Import Include="System.Linq" />

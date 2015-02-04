@@ -36,7 +36,19 @@
         players.Add(New Player(size, team, random))
 
     End Sub
-
+    Sub addPlayer(color As Char)
+        Dim team As Boolean
+        If color = "b" Then
+            team = False
+        ElseIf color = "r" Then
+            team = True
+        Else
+            players.Add(New Player(False))
+            Return
+        End If
+        Dim player As New Player(New Point(0, 0), team)
+        players.Add(player)
+    End Sub
     Sub addPlayer(player As Player)
         players.Add(player)
     End Sub
@@ -158,9 +170,9 @@
         'Spielstandsanzeige
         Dim score1, score2 As New Label()
         score1.FontSize = 25
-        score1.Foreground = New SolidColorBrush(players(0).color)
+        score1.Foreground = New SolidColorBrush(Colors.Blue)
         score2.FontSize = 25
-        score2.Foreground = New SolidColorBrush(players(1).color)
+        score2.Foreground = New SolidColorBrush(Colors.Red)
         score1.Content = scores(0)
         score2.Content = scores(1)
         Canvas.SetTop(score1, 10)

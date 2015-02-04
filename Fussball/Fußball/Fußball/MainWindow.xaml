@@ -11,8 +11,8 @@
                 <Border BorderThickness="5">
                     <StackPanel>
                         <!--Hier kommt das Flyout-Zeugs rein-->
-                        <Label Name="lZoom" Content="Zoom: "/>
-                        <Slider Name="sZoom" Value="125" Maximum="500" Minimum="1" Interval="1" Margin="3" />
+                        <!--Label Name="lZoom" Content="Zoom: "/>
+                        <Slider Name="sZoom" Value="125" Maximum="500" Minimum="1" Interval="1" Margin="3" />-->
                         <GroupBox>
                             <Grid>
                                 <Grid.RowDefinitions >
@@ -23,9 +23,9 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions >
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="3*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Label Content="Spieler1" Grid.Column="0" Grid.Row="0"/>
@@ -33,18 +33,32 @@
                                 <Label Content="Spieler3" Grid.Column="0" Grid.Row="2"/>
                                 <Label Content="Spieler4" Grid.Column="0" Grid.Row="3"/>
 
-                                <CheckBox Name="checkPlayer0" Grid.Column="1" Grid.Row="0"/>
-                                <CheckBox Name="checkPlayer1" Grid.Column="1" Grid.Row="1"/>
+                                <CheckBox Name="checkPlayer0" Grid.Column="1" Grid.Row="0" IsChecked="True" />
+                                <CheckBox Name="checkPlayer1" Grid.Column="1" Grid.Row="1" IsChecked="True" />
                                 <CheckBox Name="checkPlayer2" Grid.Column="1" Grid.Row="2"/>
                                 <CheckBox Name="checkPlayer3" Grid.Column="1" Grid.Row="3"/>
 
-                                <ComboBox Name="colorPlayer0" Grid.Column="2" Grid.Row="0"/>
-                                <ComboBox Name="colorPlayer1" Grid.Column="2" Grid.Row="1"/>
-                                <ComboBox Name="colorPlayer2" Grid.Column="2" Grid.Row="2"/>
-                                <ComboBox Name="colorPlayer3" Grid.Column="2" Grid.Row="3"/>
+                                <ComboBox Name="colorPlayer0" Background="Red" Grid.Column="2" Grid.Row="0" SelectedIndex="0" Foreground="Black">
+                                    <ComboBoxItem Content="Rot" />
+                                    <ComboBoxItem Content="Blau" />
+                                </ComboBox>
+                                <ComboBox Name="colorPlayer1" Background="Blue" Grid.Column="2" Grid.Row="1" SelectedIndex="1" Foreground="White">
+                                    <ComboBoxItem Content="Rot" />
+                                    <ComboBoxItem Content="Blau" />
+                                </ComboBox>
+                                <ComboBox Name="colorPlayer2" Background="Red" Grid.Column="2" Grid.Row="2" SelectedIndex="0" Foreground="Black" IsEnabled="false">
+                                    <ComboBoxItem Content="Rot" />
+                                    <ComboBoxItem Content="Blau" />
+                                </ComboBox>
+                                <ComboBox Name="colorPlayer3" Background="Blue" Grid.Column="2" Grid.Row="3" SelectedIndex="1" Foreground="White" IsEnabled="false">
+                                    <ComboBoxItem Content="Rot" />
+                                    <ComboBoxItem Content="Blau" />
+                                </ComboBox>
 
                             </Grid>
                         </GroupBox>
+                        <Button Name="bMode" Content="zum Server-Modus"/>
+                        <Button Name="bServer" Content="Server starten"/>
                     </StackPanel>
                 </Border>
             </controls:Flyout>

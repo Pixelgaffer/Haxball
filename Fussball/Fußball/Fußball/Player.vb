@@ -15,12 +15,18 @@ Public Class Player
     Public shootForce As Double = 10
     Public maxSpeed As Double = 5
     Public moveKeyDown(3) As Boolean
+    Public isVisible As Boolean = True
 
 
     Private Declare Function GetAsyncKeyState Lib "user32" Alias "GetAsyncKeyState" (ByVal vKey As Keys) As Int16
     Private Function IsKeyPressed(ByVal vKey As Keys) As Boolean
         Return (GetAsyncKeyState(vKey) And &H8000) = &H8000
     End Function
+
+    Sub New(visible As Boolean)
+        MyBase.New()
+        isVisible = visible
+    End Sub
 
     Sub New(pos As Point, t As Boolean)
         MyBase.New(pos, New Vector(0, 0))
@@ -85,7 +91,11 @@ Public Class Player
 
 
     Overrides Function draw() As List(Of UIElement)
-        Return MyBase.draw()
+        If isVisible Then
+            Return MyBase.draw()
+        Else
+            Return New List(Of UIElement)
+        End If
     End Function
 
 
