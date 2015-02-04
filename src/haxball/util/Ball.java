@@ -19,6 +19,7 @@
 package haxball.util;
 
 import lombok.*;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 @ToString(callSuper = true) @EqualsAndHashCode(callSuper = true)
 public class Ball extends MapObject
@@ -26,21 +27,21 @@ public class Ball extends MapObject
 	public static final float RADIUS = Player.RADIUS / 2f;
 
 	@Getter @Setter
-	private Point velocity;
+	public Vector2D velocity;
 
-	public Ball (@NonNull Point position, Point velocity, Dimension fieldSize)
+	public Ball (@NonNull Vector2D position, Vector2D velocity, Dimension fieldSize)
 	{
 		super(position, RADIUS, fieldSize);
 		this.velocity = velocity;
 	}
 
-	public Ball (Point position, Dimension fieldSize)
+	public Ball (Vector2D position, Dimension fieldSize)
 	{
-		this(position, new Point(), fieldSize);
+		this(position, new Vector2D(0d, 0d), fieldSize);
 	}
 
 	public Ball (@NonNull Dimension fieldSize)
 	{
-		this(new Point(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Point(), fieldSize);
+		this(new Vector2D(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Vector2D(0d, 0d), fieldSize);
 	}
 }

@@ -19,20 +19,21 @@
 package haxball.util;
 
 import lombok.*;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 @AllArgsConstructor @ToString
 public class Goal
 {
 	@NonNull @Getter @Setter
-	private Point start, end;
+	private Vector2D start, end;
 
 	public static Goal[] getDefaultGoals (@NonNull Dimension field)
 	{
 		return new Goal[] {
-				new Goal(new Point(5, field.getHeight() / 3f),
-						new Point(5, field.getHeight() / 3f * 2)),
-				new Goal(new Point(field.getWidth() - 5, field.getHeight() / 3f),
-						new Point(field.getWidth() - 5, field.getHeight() / 3f * 2))
+				new Goal(new Vector2D(5, field.getHeight() / 3f),
+						new Vector2D(5, field.getHeight() / 3f * 2)),
+				new Goal(new Vector2D(field.getWidth() - 5, field.getHeight() / 3f),
+						new Vector2D(field.getWidth() - 5, field.getHeight() / 3f * 2))
 		};
 	}
 }

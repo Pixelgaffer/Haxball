@@ -22,6 +22,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 @ToString(callSuper = true) @EqualsAndHashCode(callSuper = true)
 public class Player extends MapObject
@@ -42,7 +43,7 @@ public class Player extends MapObject
 	private String name;
 	
 	@Getter @Setter
-	private Point velocity = new Point();
+	public Vector2D velocity = new Vector2D(0d, 0d);
 	
 	@Setter @Getter
 	private boolean team;

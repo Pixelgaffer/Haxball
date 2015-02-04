@@ -20,6 +20,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class Client implements Runnable {
 
@@ -91,7 +92,7 @@ public class Client implements Runnable {
 			out.write(nameBuffer);
 			System.out.println("Finished");
 
-			ball = new Ball(new Point(-100, -100),  new Point(0, 0), fieldSize);
+			ball = new Ball(new Vector2D(-100, -100),  new Vector2D(0, 0), fieldSize);
 			
 			new Thread(this).start();
 
@@ -176,7 +177,7 @@ public class Client implements Runnable {
 						ball.setPosition(Serializer.deserializePoint(buffer));
 						buffer = new byte[8];
 						in.read(buffer);
-						ball.setVelocity(Serializer.deserializePoint(buffer));
+						ball.setVelocity(Serializer.deserializeVector(buffer));
 						
 						while(true) {
 							buffer = new byte[1];
@@ -193,7 +194,7 @@ public class Client implements Runnable {
 							player.setPosition(Serializer.deserializePoint(buffer));
 							buffer = new byte[8];
 							in.read(buffer);
-							player.setVelocity(Serializer.deserializePoint(buffer));
+							player.setVelocity(Serializer.deserializeVector(buffer));
 						}
 					}
 				}				

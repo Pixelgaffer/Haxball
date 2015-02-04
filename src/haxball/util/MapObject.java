@@ -20,13 +20,17 @@ package haxball.util;
 
 import lombok.*;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
+import java.util.Vector;
+
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
 @ToString @EqualsAndHashCode
 public class MapObject
 {
 	@Getter
-	private Point position = new Point();
+	public Vector2D position = new Vector2D(0d, 0d);
 
 	@NonNull @Getter
 	private float radius;
@@ -36,12 +40,12 @@ public class MapObject
 
 	public float getX ()
 	{
-		return position.getX();
+		return (float) position.getX();
 	}
 
 	public float getY ()
 	{
-		return position.getY();
+		return (float) position.getY();
 	}
 
 	public void setX (float x)
@@ -50,7 +54,7 @@ public class MapObject
 			x = 0;
 		if (x > fieldSize.getWidth())
 			x = fieldSize.getWidth();
-		position.setX(x);
+        position = new Vector2D((double)x, position.getY());
 	}
 
 	public void setY (float y)
@@ -59,7 +63,7 @@ public class MapObject
 			y = 0;
 		if (y > fieldSize.getHeight())
 			y = fieldSize.getHeight();
-		position.setY(y);
+        position = new Vector2D(position.getX(), (double)y);
 	}
 
 	public void setPosition (@NonNull Point position)

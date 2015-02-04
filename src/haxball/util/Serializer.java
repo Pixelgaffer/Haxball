@@ -22,6 +22,7 @@ import haxball.networking.ConnectionType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
@@ -67,19 +68,19 @@ public class Serializer
 		return new byte[] { width[0], width[1], width[2], width[3], height[0], height[1], height[2], height[3] };
 	}
 
-	public static byte[] serializePoint (@NonNull Point p)
+	public static byte[] serializePoint (@NonNull Vector2D p)
 	{
 		return serializePoint(ConnectionType.NormalConnection, p);
 	}
 
-	public static byte[] serializePoint (@NonNull ConnectionType type, @NonNull Point p)
+	public static byte[] serializePoint (@NonNull ConnectionType type, @NonNull Vector2D p)
 	{
 		if (type == ConnectionType.LaggyConnection)
 			return ("{\"x\":" + p.getX() + ",\"y\":" + p.getY() + "}\0")
 					.getBytes(StandardCharsets.UTF_8);
 
-		byte x[] = floatToByteArray(p.getX());
-		byte y[] = floatToByteArray(p.getY());
+		byte x[] = floatToByteArray((float)p.getX());
+		byte y[] = floatToByteArray((float)p.getY());
 		return new byte[] { x[0], x[1], x[2], x[3], y[0], y[1], y[2], y[3] };
 	}
 	
@@ -92,6 +93,13 @@ public class Serializer
 		point.setY(byteArrayToFloat(b));
 		return point;
 	}
+
+    public static Vector2D deserializeVector (@NonNull byte[] data)
+    {
+        byte[] bx = { data[0], data[1], data[2], data[3] };
+        byte[] by = { data[4], data[5], data[6], data[7] };
+        return new Vector2D( byteArrayToFloat(bx),  byteArrayToFloat(by));
+    }
 
 	public static Dimension deserializeDimension (@NonNull byte data[])
 	{

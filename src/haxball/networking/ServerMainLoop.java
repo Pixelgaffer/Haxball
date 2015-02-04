@@ -25,6 +25,7 @@ import haxball.util.Player;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -82,8 +83,7 @@ public class ServerMainLoop implements Runnable
 			// Move players
 			for (Player player : players)
 			{
-				player.getVelocity().setX(player.getVelocity().getX() * (1 - friction));
-				player.getVelocity().setY(player.getVelocity().getY() * (1 - friction));
+                player.setVelocity(player.getVelocity().scalarMultiply(1 - friction));
 
 				byte input = player.getLastInput();
 
@@ -107,31 +107,18 @@ public class ServerMainLoop implements Runnable
 					vx += speed;
 				}
 
-				// Normalize stuff manually because
+                Vector2D v = new Vector2D(vx, vy);
+                if (v.distance(Vector2D.ZERO) > 0) {
+                    v = v.normalize();
+                }
 
-				float len = (float)Math.sqrt(vx * vx + vy * vy);
-				if (len >= 1)
-				{
-					vx /= len;
-					vx *= speed;
-					vy /= len;
-					vy *= speed;
-
-					player.getVelocity().setX(
-							player.getVelocity().getX() + (vx - player.getVelocity().getX()) * acceleration);
-					player.getVelocity().setY(
-							player.getVelocity().getY() + (vy - player.getVelocity().getY()) * acceleration);
-				}
-
-				player.setX(player.getX() + player.getVelocity().getX());
-				player.setY(player.getY() + player.getVelocity().getY());
+                player.velocity = player.velocity.add(v.subtract(player.velocity).scalarMultiply(acceleration));
+                player.position = player.position.add(player.velocity);
 			} // for player : players
 
 			// Move ball
-			ball.getVelocity().setX(ball.getVelocity().getX() + friction * (ball.getVelocity().getX()>0 ? -1f : 1f));
-			ball.getVelocity().setY(ball.getVelocity().getY() + friction * (ball.getVelocity().getY()>0 ? -1f : 1f));
-			ball.setX(ball.getX() + ball.getVelocity().getX());
-			ball.setY(ball.getY() + ball.getVelocity().getY());
+            ball.velocity = ball.velocity.scalarMultiply(1-friction);
+            ball.position = ball.position.add(ball.velocity);
 
 			System.out.println("before:\t" + ball + "; " + players);
 
@@ -148,8 +135,7 @@ public class ServerMainLoop implements Runnable
 				{
 					if (p.isShooting())
 					{
-						ball.getVelocity().setX(p.getVelocity().getX() * 3f);
-						ball.getVelocity().setY(p.getVelocity().getY() * 3f);
+                        ball.velocity = p.position.subtract(ball.position).normalize().scalarMultiply(1.0f);
 					}
 					else
 						p.uncollide(ball);
