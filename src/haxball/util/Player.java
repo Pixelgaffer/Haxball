@@ -23,14 +23,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@ToString @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true) @EqualsAndHashCode(callSuper = true)
 public class Player extends MapObject
 {
 	public static final float RADIUS = 3f / 100f;
 
-	public Player (byte id, String name)
+	public Player (byte id, String name, Dimension fieldSize)
 	{
-		super(RADIUS);
+		super(RADIUS, fieldSize);
 		this.id = id;
 		this.name = name;
 	}

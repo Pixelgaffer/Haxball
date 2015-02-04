@@ -20,36 +20,27 @@ package haxball.util;
 
 import lombok.*;
 
-@ToString @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true) @EqualsAndHashCode(callSuper = true)
 public class Ball extends MapObject
 {
 	public static final float RADIUS = Player.RADIUS / 2f;
 
 	@Getter @Setter
-	private Point position;
-
-	@Getter @Setter
 	private Point velocity;
 
-	public Ball (@NonNull Point position, Point velocity)
+	public Ball (@NonNull Point position, Point velocity, Dimension fieldSize)
 	{
-		super(RADIUS);
-		this.position = position;
+		super(position, RADIUS, fieldSize);
 		this.velocity = velocity;
 	}
 
-	public Ball (Point position)
+	public Ball (Point position, Dimension fieldSize)
 	{
-		this(position, new Point());
-	}
-
-	public Ball ()
-	{
-		this(new Point(), new Point());
+		this(position, new Point(), fieldSize);
 	}
 
 	public Ball (@NonNull Dimension fieldSize)
 	{
-		this(new Point(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Point());
+		this(new Point(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Point(), fieldSize);
 	}
 }

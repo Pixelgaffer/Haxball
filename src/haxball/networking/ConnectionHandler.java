@@ -80,11 +80,9 @@ public class ConnectionHandler implements Runnable
 			{
 				case 1:
 					type = ConnectionType.NormalConnection;
-					out.write(id);
 					break;
 				case 2:
 					type = ConnectionType.LaggyConnection;
-					out.write(("{\"id\":" + id + "}\0").getBytes(StandardCharsets.UTF_8));
 					break;
 				default:
 					throw new IOException("Unknown type: " + typeInt);
@@ -93,6 +91,12 @@ public class ConnectionHandler implements Runnable
 			// send dimension size
 			out.write(serializeDimension(type, getFieldSize()));
 			out.flush();
+
+			// send id
+			if (type == ConnectionType.LaggyConnection)
+				out.write(("{\"id\":" + id + "}\0").getBytes(StandardCharsets.UTF_8));
+			else
+				out.write(id);
 
 			// send goals
 			if (type == ConnectionType.LaggyConnection)
@@ -124,7 +128,7 @@ public class ConnectionHandler implements Runnable
 			System.out.println("Connected client " + getSocket() + " as name " + name);
 
 			// create player
-			player = new Player(getId(), getName());
+			player = new Player(getId(), getName(), fieldSize);
 		}
 		catch (Exception ioe)
 		{
