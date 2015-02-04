@@ -1,0 +1,37 @@
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Release\Fußball.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Release\Fußball.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Release\Fußball.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Release\MahApps.Metro.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Release\ServerDll.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Release\System.Windows.Interactivity.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Release\MahApps.Metro.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\MainWindow.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\Application.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\MainWindow.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\Application.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\Fußball_MarkupCompile.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\Fußball.g.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\Fußball.Resources.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\Fußball.vbproj.GenerateResource.Cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\Fußball.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\Fußball.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Release\Fußball.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Release\Fußball.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Release\Fußball.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Release\Fußball.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Release\MahApps.Metro.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Release\ServerDll.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Release\System.Windows.Interactivity.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Release\MahApps.Metro.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\MainWindow.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Application.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\MainWindow.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Application.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball_MarkupCompile.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.g.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.Resources.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.vbproj.GenerateResource.Cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Release\Fußball.vbprojResolveAssemblyReference.cache
