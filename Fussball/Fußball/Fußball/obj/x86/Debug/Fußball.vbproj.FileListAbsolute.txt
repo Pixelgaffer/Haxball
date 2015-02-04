@@ -1,0 +1,54 @@
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\bin\Debug\Fußball.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\bin\Debug\Fußball.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\bin\Debug\Fußball.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\bin\Debug\MahApps.Metro.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\bin\Debug\MahApps.Metro.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Fußball.vbprojResolveAssemblyReference.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\MainWindow.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Application.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\MainWindow.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Application.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Fußball_MarkupCompile.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Fußball.g.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Fußball.Resources.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Fußball.vbproj.GenerateResource.Cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Fußball.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Fußball.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\Fußball.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Fußball.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Fußball.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Fußball.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Debug\Fußball.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Debug\MahApps.Metro.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Debug\MahApps.Metro.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Fußball.vbprojResolveAssemblyReference.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\MainWindow.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Application.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\MainWindow.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Application.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Fußball_MarkupCompile.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Fußball.g.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Fußball.Resources.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\obj\x86\Debug\Fußball.vbproj.GenerateResource.Cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Debug\Fußball.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Debug\Fußball.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball Metro\BWInf_Kegeln\bin\Debug\ServerDll.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Fußball.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Fußball.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Debug\Fußball.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Debug\MahApps.Metro.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Debug\ServerDll.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\bin\Debug\MahApps.Metro.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Fußball.vbprojResolveAssemblyReference.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\MainWindow.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Application.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\MainWindow.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Application.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Fußball_MarkupCompile.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Fußball.g.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Fußball.Resources.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Fußball.vbproj.GenerateResource.Cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\Fußball\Fußball\obj\x86\Debug\Fußball.exe

@@ -1,0 +1,21 @@
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\bin\Debug\BWInf_Kegeln.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\bin\Debug\BWInf_Kegeln.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\bin\Debug\BWInf_Kegeln.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\bin\Debug\MahApps.Metro.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\bin\Debug\MahApps.Metro.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.vbprojResolveAssemblyReference.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\MainWindow.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\Application.baml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\MainWindow.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\Application.g.vb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln_MarkupCompile.cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.g.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.Resources.resources
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.vbproj.GenerateResource.Cache
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.pdb
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.exe
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.xml
+C:\Users\Philip\Documents\Programmieren\Visual Studio\BWInf_Kegeln - Kopie\BWInf_Kegeln\obj\x86\Debug\BWInf_Kegeln.pdb
