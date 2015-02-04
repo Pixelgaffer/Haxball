@@ -5,6 +5,10 @@
 *.pyc
 *.log
 
+*.sdf
+*.suo
+
+
 out/
 lib/*-javadoc.jar
 lib/*-sources.jar
