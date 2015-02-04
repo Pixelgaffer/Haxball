@@ -133,6 +133,8 @@ public class ServerMainLoop implements Runnable
 			ball.setX(ball.getX() + ball.getVelocity().getX());
 			ball.setY(ball.getY() + ball.getVelocity().getY());
 
+			System.out.println("before:\t" + ball + "; " + players);
+
 			// Check for collisions
 			for (Player p : players)
 			{
@@ -154,6 +156,8 @@ public class ServerMainLoop implements Runnable
 				}
 
 			} // for p : players
+
+			System.out.println("after:\t" + ball + "; " + players);
 
 			// send position to every connection
 			for (ConnectionHandler handler : connectionHandlers)

@@ -23,7 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@ToString @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true) @EqualsAndHashCode(callSuper = true)
 public class Player extends MapObject
 {
 	public static final float RADIUS = 3f / 100f;
