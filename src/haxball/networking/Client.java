@@ -149,9 +149,9 @@ public class Client implements Runnable {
 								break;
 							}
 							Player player = players.get(buffer[0]);
+							System.out.println(buffer[0] + ": " + player);
 							buffer = new byte[1];
 							in.read(buffer);
-							System.out.println(player);
 							player.setTeam(buffer[0] == 0x01);
 						}
 						gameStarted = true;

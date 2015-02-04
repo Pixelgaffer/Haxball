@@ -46,15 +46,19 @@ public class MapObject
 
 	public void setX (float x)
 	{
-		if ((x < 0) || (x > fieldSize.getWidth()))
-			return;
+		if (x < 0)
+			x = 0;
+		if (x > fieldSize.getWidth())
+			x = fieldSize.getWidth();
 		position.setX(x);
 	}
 
 	public void setY (float y)
 	{
-		if ((y < 0) || (y > fieldSize.getHeight()))
-			return;
+		if (y < 0)
+			y = 0;
+		if (y > fieldSize.getHeight())
+			y = fieldSize.getHeight();
 		position.setY(y);
 	}
 
@@ -70,12 +74,58 @@ public class MapObject
 		setY(y);
 	}
 
-	public boolean collidesWith (@NonNull MapObject other)
+	public float getDistance (@NonNull MapObject other)
 	{
 		float xdist = Math.abs(getX() - other.getX());
 		float ydist = Math.abs(getY() - other.getY());
 		double dist = xdist * xdist + ydist * ydist;
-		float mindist = getRadius() + other.getRadius();
-		return (dist > mindist * mindist);
+		return (float)Math.sqrt(dist);
+	}
+
+	public float getMinDistance (@NonNull MapObject other)
+	{
+		return (getRadius() + other.getRadius());
+	}
+
+	public boolean collidesWith (@NonNull MapObject other)
+	{
+		return (getDistance(other) > getMinDistance(other));
+	}
+
+	public void uncollide (@NonNull MapObject other)
+	{
+		float dist = getDistance(other);
+		float mindist = getMinDistance(other);
+		if (dist > mindist)
+		{
+			float distplus = (float)((dist - mindist) / 2.0);
+			float ydiff = Math.abs(getY() - other.getY()) / 2f;
+			float yminus = ydiff * distplus / dist;
+			float xminus = (float)(
+					Math.sqrt(Math.pow(dist + distplus, 2) - Math.pow(ydiff + yminus, 2))
+							- Math.abs(getX() - other.getX()) / 2.0);
+
+			if (getX() > other.getX())
+			{
+				setX(getX() + xminus);
+				other.setX(other.getX() - xminus);
+			}
+			else
+			{
+				setX(getX() - xminus);
+				other.setX(other.getX() + xminus);
+			}
+
+			if (getY() > other.getY())
+			{
+				setY(getY() + yminus);
+				other.setY(other.getY() - yminus);
+			}
+			else
+			{
+				setY(getY() - yminus);
+				other.setY(other.getY() + yminus);
+			}
+		}
 	}
 }
