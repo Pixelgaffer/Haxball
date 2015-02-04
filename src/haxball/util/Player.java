@@ -28,9 +28,9 @@ public class Player extends MapObject
 {
 	public static final float RADIUS = 3f / 100f;
 
-	public Player (byte id, String name)
+	public Player (byte id, String name, Dimension fieldSize)
 	{
-		super(RADIUS);
+		super(RADIUS, fieldSize);
 		this.id = id;
 		this.name = name;
 	}

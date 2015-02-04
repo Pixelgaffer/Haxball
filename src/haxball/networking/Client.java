@@ -64,26 +64,26 @@ public class Client implements Runnable {
 
 			out.write(0x01);
 			System.out.println("Send 1");
-			
-			System.out.println("Reading id");
-			byte[] idBuffer = new byte[1];
-			in.read(idBuffer);
-			System.out.println(idBuffer[0]);
-			player = new Player(idBuffer[0], name);
-			players.put(idBuffer[0], player);
-			System.out.println("Read");
-			
+
 			System.out.println("Reading Field Size");
 			byte[] fieldSizeBuffer = new byte[8];
 			in.read(fieldSizeBuffer);
 			fieldSize = Serializer.deserializeDimension(fieldSizeBuffer);
 			System.out.println("Read Field Size");
-			
+
+			System.out.println("Reading id");
+			byte[] idBuffer = new byte[1];
+			in.read(idBuffer);
+			System.out.println(idBuffer[0]);
+			player = new Player(idBuffer[0], name, new Dimension());
+			players.put(idBuffer[0], player);
+			System.out.println("Read");
+
 			{
 				byte[] trash = new byte[33];
 				in.read(trash);
 			}
-			
+
 			byte[] nameBuffer = name.getBytes(StandardCharsets.UTF_8);
 			System.out.println("Sending length");
 			out.write(nameBuffer.length);
@@ -91,7 +91,7 @@ public class Client implements Runnable {
 			out.write(nameBuffer);
 			System.out.println("Finished");
 
-			ball = new Ball(new Point(-100, -100),  new Point(0, 0));
+			ball = new Ball(new Point(-100, -100),  new Point(0, 0), fieldSize);
 			
 			new Thread(this).start();
 
@@ -121,7 +121,7 @@ public class Client implements Runnable {
 						buffer = new byte[nameLength];
 						in.read(buffer);
 						String name = new String(buffer, StandardCharsets.UTF_8);
-						Player player = new Player(uid, name);
+						Player player = new Player(uid, name, fieldSize);
 						players.put(uid, player);
 						System.out.println("Player " + player.getName() + " has Joined!");
 						for(val listener : userAddedListeners) {

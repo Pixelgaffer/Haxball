@@ -31,6 +31,9 @@ public class MapObject
 	@NonNull @Getter
 	private float radius;
 
+	@NonNull
+	private Dimension fieldSize;
+
 	public float getX ()
 	{
 		return position.getX();
@@ -43,11 +46,15 @@ public class MapObject
 
 	public void setX (float x)
 	{
+		if ((x < 0) || (x > fieldSize.getWidth()))
+			return;
 		position.setX(x);
 	}
 
 	public void setY (float y)
 	{
+		if ((y < 0) || (y > fieldSize.getHeight()))
+			return;
 		position.setY(y);
 	}
 

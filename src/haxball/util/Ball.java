@@ -31,25 +31,20 @@ public class Ball extends MapObject
 	@Getter @Setter
 	private Point velocity;
 
-	public Ball (@NonNull Point position, Point velocity)
+	public Ball (@NonNull Point position, Point velocity, Dimension fieldSize)
 	{
-		super(RADIUS);
+		super(RADIUS, fieldSize);
 		this.position = position;
 		this.velocity = velocity;
 	}
 
-	public Ball (Point position)
+	public Ball (Point position, Dimension fieldSize)
 	{
-		this(position, new Point());
-	}
-
-	public Ball ()
-	{
-		this(new Point(), new Point());
+		this(position, new Point(), fieldSize);
 	}
 
 	public Ball (@NonNull Dimension fieldSize)
 	{
-		this(new Point(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Point());
+		this(new Point(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Point(), fieldSize);
 	}
 }
