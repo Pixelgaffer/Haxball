@@ -10,6 +10,7 @@
 *.sdf
 *.suo
 
+*.cache
 
 out/
 lib/*-javadoc.jar
