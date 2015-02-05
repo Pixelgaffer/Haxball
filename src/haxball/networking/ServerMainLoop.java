@@ -31,8 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
-public class ServerMainLoop implements Runnable
-{
+public class ServerMainLoop implements Runnable {
 	@NonNull
 	@Getter
 	private Dimension fieldSize;
@@ -46,7 +45,7 @@ public class ServerMainLoop implements Runnable
 
 	@NonNull
 	@Getter
-	private Collection<Player>            players;
+	private Collection<Player> players;
 	@NonNull
 	@Getter
 	private Collection<ConnectionHandler> connectionHandlers;
@@ -56,114 +55,88 @@ public class ServerMainLoop implements Runnable
 	@Getter
 	private boolean stopped;
 
-	public void stop ()
-	{
+	public void stop() {
 		stopped = true;
 	}
 
-	public void keyPressed (@NonNull Player player, byte key)
-	{
+	public void keyPressed(@NonNull Player player, byte key) {
 		player.setLastInput(key);
 	}
 
-	private float friction     = 0.05f;
-	private float speed        = 3.0f;
+	private float friction = 0.05f;
+	private float speed = 3.0f;
 	private float acceleration = 0.2f;
 
 	@Override
-	public void run ()
-	{
+	public void run() {
 		System.out.println("ServerMainLoop running");
 
 		ball = new Ball(getFieldSize());
 		byte score0 = 0, score1 = 0;
 
-		while (!stopped)
-		{
+		while (!stopped) {
 			// Move players
-			for (Player player : players)
-			{
-                player.velocity = player.velocity.scalarMultiply(1 - friction);
+			for (Player player : players) {
+				player.velocity = player.velocity.scalarMultiply(1 - friction);
 
 				byte input = player.getLastInput();
 
 				float vx = 0;
 				float vy = 0;
 
-				if ((input & 0b00_00_00_01) != 0)
-				{
+				if ((input & 0b00_00_00_01) != 0) {
 					vy += speed;
 				}
-				if ((input & 0b00_00_00_10) != 0)
-				{
+				if ((input & 0b00_00_00_10) != 0) {
 					vx -= speed;
 				}
-				if ((input & 0b00_00_01_00) != 0)
-				{
+				if ((input & 0b00_00_01_00) != 0) {
 					vy -= speed;
 				}
-				if ((input & 0b00_00_10_00) != 0)
-				{
+				if ((input & 0b00_00_10_00) != 0) {
 					vx += speed;
 				}
 
-                Vector2D v = new Vector2D(vx, vy);
-                if (v.distance(Vector2D.ZERO) > 0) {
-                    v = v.normalize();
-                }
-
-                player.velocity = player.velocity.add(v.subtract(player.velocity).scalarMultiply(acceleration));
-                System.out.println(player.position);
-                System.out.println("-->");
-                player.position = player.position.add(player.velocity);
-                System.out.println(player.position);
-            } // for player : players
-
-			// Move ball
-            ball.velocity = ball.velocity.scalarMultiply(1-friction);
-            ball.position = ball.position.add(ball.velocity);
-
-			//System.out.println("before:\t" + ball + "; " + players);
-
-			// Check for collisions
-			for (Player p : players)
-			{
-				// collisions between players
-				for (Player p0 : players) {
-                    if (!p.equals(p0)) {
-                        p.uncollide(p0);
-                    }
-                }
-
-				// if a player collides with the ball, check whether he hits or just collides
-				// and move ball and if needed player
-				if (p.collidesWith(ball))
-				{
-					if (p.isShooting())
-					{
-                        ball.velocity = p.position.subtract(ball.position).normalize().scalarMultiply(1.0f);
-					}
-					else
-						p.uncollide(ball);
+				Vector2D v = new Vector2D(vx, vy);
+				if (v.distance(Vector2D.ZERO) > 0) {
+					v = v.normalize();
 				}
 
-			} // for p : players
+				player.velocity = player.velocity.add(v.subtract(player.velocity).scalarMultiply(acceleration));
+				System.out.println(player.position);
+				System.out.println("-->");
+				player.position = player.position.add(player.velocity);
+				System.out.println(player.position);
+			}
+
+			// Move ball
+			ball.velocity = ball.velocity.scalarMultiply(1 - friction);
+			ball.position = ball.position.add(ball.velocity);
+
+
+			// Check for collisions
+			for (Player p : players) {
+				// collisions between players
+				for (Player p0 : players) {
+					if (!p.equals(p0)) {
+						p.uncollide(p0);
+					}
+				}
+				p.uncollide(ball);
+				p.setInsideMap(true);
+
+			}
 			
-
-
-			//System.out.println("after:\t" + ball + "; " + players);
-
+			ball.setInsideMap(false);
+			
 			// send position to every connection
 			for (ConnectionHandler handler : connectionHandlers)
 				handler.writeState(ball, score0, score1, players);
 
 			// sleep
-			try
-			{
+			try {
 				Thread.sleep(10);
-			}
-			catch (InterruptedException e)
-			{
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
