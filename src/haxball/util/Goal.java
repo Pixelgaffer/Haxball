@@ -24,18 +24,11 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @ToString
 public class Goal
 {
 	@NonNull @Getter @Setter
 	private Vector2D start, end;
-
-	@Getter
-	private GoalPost startPost, endPost;
 	
 	@Getter
 	private float x;
@@ -45,8 +38,6 @@ public class Goal
 		start = vector2d;
 		end = vector2d;
 		this.x = x;
-		startPost = new GoalPost(start, fieldSize);
-		startPost = new GoalPost(end, fieldSize);
 	}
 
 	public static Goal[] getDefaultGoals (@NonNull Dimension field)
@@ -58,11 +49,6 @@ public class Goal
 						new Vector2D(field.getWidth() - 5, field.getHeight() / 3f * 2), field, field.getWidth())
 		};
 	}
-	
-	public List<GoalPost> getPosts ()
-	{
-		return new ArrayList<GoalPost>();
-	}
 
 	public boolean hits (MapObject object)
 	{
@@ -73,21 +59,5 @@ public class Goal
 		// check that the object collides with the line
 		return ((object.position.getX() - object.getRadius() >= start.getX()) &&
 				(object.position.getX() + object.getRadius() <= start.getX()));
-	}
-	
-	public static class GoalPost extends MapObject
-	{
-
-		protected GoalPost (Vector2D position, Dimension fieldSize)
-		{
-			super(position, Vector2D.ZERO, 10, fieldSize);
-		}
-
-		@Override
-		public boolean isMoveable ()
-		{
-			return false;
-		}
-		
 	}
 }
