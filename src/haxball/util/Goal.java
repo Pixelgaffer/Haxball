@@ -18,22 +18,61 @@
  */
 package haxball.util;
 
-import lombok.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-@AllArgsConstructor @ToString
+@ToString
 public class Goal
 {
 	@NonNull @Getter @Setter
 	private Vector2D start, end;
+		
+	@Getter
+	private GoalPost startPost, endPost;
+	
+	@Getter
+	private float x;
+
+	public Goal(Vector2D vector2d, Vector2D vector2d2, Dimension fieldSize, float x) {
+		start = vector2d;
+		end = vector2d;
+		this.x = x;
+		startPost = new GoalPost(start, fieldSize);
+		startPost = new GoalPost(end, fieldSize);
+	}
 
 	public static Goal[] getDefaultGoals (@NonNull Dimension field)
 	{
 		return new Goal[] {
 				new Goal(new Vector2D(5, field.getHeight() / 3f),
-						new Vector2D(5, field.getHeight() / 3f * 2)),
+						new Vector2D(5, field.getHeight() / 3f * 2), field, 0),
 				new Goal(new Vector2D(field.getWidth() - 5, field.getHeight() / 3f),
-						new Vector2D(field.getWidth() - 5, field.getHeight() / 3f * 2))
+						new Vector2D(field.getWidth() - 5, field.getHeight() / 3f * 2), field, field.getWidth())
 		};
+	}
+	
+	public List<GoalPost> getPosts() {
+		return new ArrayList<GoalPost>(Arrays.asList(startPost, endPost));
+	}
+	
+	public static class GoalPost extends MapObject {
+
+		protected GoalPost(Vector2D position, Dimension fieldSize) {
+			super(position, Vector2D.ZERO, 10, fieldSize);
+		}
+
+		@Override
+		public boolean isMoveable() {
+			return false;
+		}
+		
 	}
 }

@@ -21,14 +21,17 @@ package haxball.networking;
 import haxball.util.Ball;
 import haxball.util.Dimension;
 import haxball.util.Goal;
+import haxball.util.Goal.GoalPost;
 import haxball.util.Player;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import java.util.Collection;
 import java.util.HashMap;
+
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 @RequiredArgsConstructor
 public class ServerMainLoop implements Runnable {
@@ -66,6 +69,7 @@ public class ServerMainLoop implements Runnable {
 	private float friction = 0.05f;
 	private float speed = 3.0f;
 	private float acceleration = 0.2f;
+	private float shootingPower;
 
 	@Override
 	public void run() {
@@ -95,6 +99,11 @@ public class ServerMainLoop implements Runnable {
 				if ((input & 0b00_00_10_00) != 0) {
 					vx += speed;
 				}
+				if ((input & 0b00_01_00_00) != 0) {
+					player.setShooting(true);
+				} else {
+					player.setShooting(false);
+				}
 
 				Vector2D v = new Vector2D(vx, vy);
 				if (v.distance(Vector2D.ZERO) > 0) {
@@ -121,14 +130,25 @@ public class ServerMainLoop implements Runnable {
 				p.uncollide(ball);
 				p.setInsideMap(true);
 
+				for(Goal goal : goals) {
+					for(GoalPost post : goal.getPosts()) {
+						p.uncollide(post);
+					}
+				}
+				
+				if(p.isShooting()) {
+					Vector2D norm = ball.position.subtract(p.position).normalize();
+					ball.velocity = norm.scalarMultiply(shootingPower);
+				}
+				
 			}
 			
 			ball.setInsideMap(false);
 			
 			// send position to every connection
-			for (ConnectionHandler handler : connectionHandlers)
+			for (ConnectionHandler handler : connectionHandlers) {
 				handler.writeState(ball, score0, score1, players);
-
+			}
 			// sleep
 			try {
 				Thread.sleep(10);

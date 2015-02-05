@@ -45,6 +45,6 @@ public class Ball extends MapObject {
 
     @Override
     public boolean isMoveable() {
-	return true;
+    	return true;
     }
 }

@@ -87,7 +87,7 @@ public abstract class MapObject {
 		if (dist <= mindist) {
 			float overlap = mindist - dist;
 			Vector2D direction = other.position.subtract(position).normalize();
-			Vector2D sum = other.velocity.subtract(velocity);
+			Vector2D sum = other.velocity.add(velocity);
 			if(!isMoveable()) {
 				other.position = other.position.add(direction.scalarMultiply(overlap));
 				other.velocity = other.velocity.add(sum.scalarMultiply(0.5));
