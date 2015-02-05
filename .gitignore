@@ -8,10 +8,13 @@
 *.log
 
 *.sdf
+*.opensdf
 *.suo
 *.filters
 *.user
-
+*.makefile
+*.Debug
+*.Release
 
 *.cache
 
