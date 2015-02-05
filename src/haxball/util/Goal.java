@@ -61,7 +61,7 @@ public class Goal
 	
 	public List<GoalPost> getPosts ()
 	{
-		return new ArrayList<GoalPost>(Arrays.asList(startPost, endPost));
+		return new ArrayList<GoalPost>();
 	}
 
 	public boolean hits (MapObject object)

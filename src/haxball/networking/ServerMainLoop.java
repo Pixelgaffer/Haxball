@@ -26,6 +26,7 @@ import haxball.util.Player;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Random;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -57,6 +58,8 @@ public class ServerMainLoop implements Runnable {
 
 	@Getter
 	private boolean stopped;
+	
+	private Random random = new Random();
 
 	public void stop() {
 		stopped = true;
@@ -69,13 +72,12 @@ public class ServerMainLoop implements Runnable {
 	private float friction = 0.05f;
 	private float speed = 3.0f;
 	private float acceleration = 0.2f;
-	private float shootingPower;
+	private float shootingPower = 12.5f;
 
 	@Override
 	public void run() {
-		System.out.println("ServerMainLoop running");
 
-		ball = new Ball(getFieldSize());
+		resetField();
 		byte score0 = 0, score1 = 0;
 
 		while (!stopped) {
@@ -136,14 +138,22 @@ public class ServerMainLoop implements Runnable {
 					}
 				}
 				
-				if(p.isShooting()) {
+				if(p.isShooting() && p.position.distance(ball.position) < (p.getRadius() + ball.getRadius()) * 1.4f) {
 					Vector2D norm = ball.position.subtract(p.position).normalize();
-					ball.velocity = norm.scalarMultiply(shootingPower);
+					ball.velocity = ball.velocity.add(norm.scalarMultiply(shootingPower));
 				}
 				
 			}
-			
-			ball.setInsideMap(false);
+			int result;
+			if((result = ball.setInsideMap(false)) >= 0) {
+				if(result == 0) {
+					score0++;
+				}
+				else {
+					score1++;
+				}
+				resetField();
+			}
 			
 			// send position to every connection
 			for (ConnectionHandler handler : connectionHandlers) {
@@ -157,5 +167,13 @@ public class ServerMainLoop implements Runnable {
 			}
 
 		} // while !stopped
+	}
+	
+	public void resetField() {
+		ball = new Ball(getFieldSize());
+		for(Player p : players) {
+			p.position = new Vector2D(random.nextDouble() * fieldSize.getWidth() * 0.5 + (p.isTeam() ? 0 : fieldSize.getWidth() * 0.5), random.nextDouble() * fieldSize.getHeight());
+			p.velocity = Vector2D.ZERO;
+		}
 	}
 }

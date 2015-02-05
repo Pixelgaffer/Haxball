@@ -18,11 +18,15 @@
  */
 package haxball.util;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-
-import java.util.Vector;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
@@ -47,16 +51,21 @@ public abstract class MapObject {
 		return (position.distance(other.position) <= getCollisionDistance(other));
 	}
 
-	public void setInsideMap(boolean middle) {
+	public int setInsideMap(boolean middle) {
 		if (!isMoveable()) {
-			return;
+			return -1;
 		}
 
 		float distance = middle ? 0 : radius;
 
+		int result = -1;
+		
 		if (position.getX() - distance < 0) {
 			position = new Vector2D(distance, position.getY());
 			velocity = new Vector2D(-velocity.getX(), velocity.getY());
+			if(position.getY() > 1/3f * fieldSize.getHeight() && position.getY() < 2/3f * fieldSize.getHeight()) {
+				result = 0;
+			}
 		}
 		if (position.getY() - distance < 0) {
 			position = new Vector2D(position.getX(), distance);
@@ -65,11 +74,15 @@ public abstract class MapObject {
 		if (position.getX() + distance >= fieldSize.getWidth()) {
 			position = new Vector2D(fieldSize.getWidth() - distance - 1, position.getY());
 			velocity = new Vector2D(-velocity.getX(), velocity.getY());
+			if(position.getY() > 1/3f * fieldSize.getHeight() && position.getY() < 2/3f * fieldSize.getHeight()) {
+				result = 1;
+			}
 		}
 		if (position.getY() + distance >= fieldSize.getHeight()) {
 			position = new Vector2D(position.getX(), fieldSize.getHeight() - distance - 1);
-			velocity = new Vector2D(-velocity.getX(), -velocity.getY());
+			velocity = new Vector2D(velocity.getX(), -velocity.getY());
 		}
+		return result;
 	}
 	
 	public void uncollide(MapObject other) {
