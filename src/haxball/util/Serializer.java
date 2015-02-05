@@ -18,154 +18,84 @@
  */
 package haxball.util;
 
-import haxball.networking.ConnectionType;
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+import java.util.Collection;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Serializer
-{
-	public static byte[] intToByteArray (int value)
-	{
-		return ByteBuffer.allocate(4).putInt(value).array();
-	}
-
-	public static int byteArrayToInt (@NonNull byte data[])
-	{
-		return ByteBuffer.wrap(data).getInt();
-	}
-
-	public static byte[] floatToByteArray (float value)
-	{
-		return ByteBuffer.allocate(4).putFloat(value).array();
-	}
-
-	public static float byteArrayToFloat (@NonNull byte data[])
-	{
-		return ByteBuffer.wrap(data).getFloat();
-	}
-
-	public static byte[] serializeDimension (@NonNull Dimension d)
-	{
-		return serializeDimension(ConnectionType.NormalConnection, d);
-	}
-
-	public static byte[] serializeDimension (@NonNull ConnectionType type, @NonNull Dimension d)
-	{
-		if (type == ConnectionType.LaggyConnection)
-			return ("{\"width\":" + d.getWidth() + ",\"height\":" + d.getHeight() + "}\0")
-					.getBytes(StandardCharsets.UTF_8);
-
-		byte width[] = intToByteArray(d.getWidth());
-		byte height[] = intToByteArray(d.getHeight());
-		return new byte[] { width[0], width[1], width[2], width[3], height[0], height[1], height[2], height[3] };
-	}
-
-	public static byte[] serializePoint (@NonNull Vector2D p)
-	{
-		return serializePoint(ConnectionType.NormalConnection, p);
-	}
-
-	public static byte[] serializePoint (@NonNull ConnectionType type, @NonNull Vector2D p)
-	{
-		if (type == ConnectionType.LaggyConnection)
-			return ("{\"x\":" + p.getX() + ",\"y\":" + p.getY() + "}\0")
-					.getBytes(StandardCharsets.UTF_8);
-
-		byte x[] = floatToByteArray((float)p.getX());
-		byte y[] = floatToByteArray((float)p.getY());
-		return new byte[] { x[0], x[1], x[2], x[3], y[0], y[1], y[2], y[3] };
-	}
-	
-	public static Point deserializePoint (@NonNull byte[] data)
-	{
-		Point point = new Point();
-		byte[] b = { data[0], data[1], data[2], data[3] };
-		point.setX(byteArrayToFloat(b));
-		b = new byte[] { data[4], data[5], data[6], data[7] };
-		point.setY(byteArrayToFloat(b));
-		return point;
-	}
-
-    public static Vector2D deserializeVector (@NonNull byte[] data)
-    {
-        byte[] bx = { data[0], data[1], data[2], data[3] };
-        byte[] by = { data[4], data[5], data[6], data[7] };
-        return new Vector2D( byteArrayToFloat(bx),  byteArrayToFloat(by));
+public class Serializer {
+    public static byte[] intToByteArray(int value) {
+	return ByteBuffer.allocate(4).putInt(value).array();
     }
 
-	public static Dimension deserializeDimension (@NonNull byte data[])
-	{
-		Dimension d = new Dimension();
-		byte b[] = { data[0], data[1], data[2], data[3] };
-		d.setWidth(byteArrayToInt(b));
-		b = new byte[] { data[4], data[5], data[6], data[7] };
-		d.setHeight(byteArrayToInt(b));
-		return d;
+    public static int byteArrayToInt(@NonNull byte data[]) {
+	return ByteBuffer.wrap(data).getInt();
+    }
+
+    public static byte[] floatToByteArray(float value) {
+	return ByteBuffer.allocate(4).putFloat(value).array();
+    }
+
+    public static float byteArrayToFloat(@NonNull byte data[]) {
+	return ByteBuffer.wrap(data).getFloat();
+    }
+
+    public static byte[] serializeDimension(@NonNull Dimension d) {
+	byte width[] = intToByteArray(d.getWidth());
+	byte height[] = intToByteArray(d.getHeight());
+	return new byte[] { width[0], width[1], width[2], width[3], height[0], height[1], height[2], height[3] };
+    }
+
+    public static byte[] serializePoint(@NonNull Vector2D p) {
+	byte x[] = floatToByteArray((float) p.getX());
+	byte y[] = floatToByteArray((float) p.getY());
+	return new byte[] { x[0], x[1], x[2], x[3], y[0], y[1], y[2], y[3] };
+    }
+
+
+    public static Vector2D deserializeVector(@NonNull byte[] data) {
+	byte[] bx = { data[0], data[1], data[2], data[3] };
+	byte[] by = { data[4], data[5], data[6], data[7] };
+	return new Vector2D(byteArrayToFloat(bx), byteArrayToFloat(by));
+    }
+
+    public static Dimension deserializeDimension(@NonNull byte data[]) {
+	Dimension d = new Dimension();
+	byte b[] = { data[0], data[1], data[2], data[3] };
+	d.setWidth(byteArrayToInt(b));
+	b = new byte[] { data[4], data[5], data[6], data[7] };
+	d.setHeight(byteArrayToInt(b));
+	return d;
+    }
+
+    public static byte[] serializeGoal(@NonNull Goal goal) {
+	byte start[] = serializePoint(goal.getStart());
+	byte end[] = serializePoint(goal.getEnd());
+	return new byte[] { start[0], start[1], start[2], start[3], start[4], start[5], start[6], start[7], end[0], end[1], end[2], end[3], end[4], end[5], end[6], end[7] };
+    }
+
+    public static byte[] serializeState(@NonNull Ball ball, byte score0, byte score1, @NonNull Collection<Player> players) {
+
+	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	baos.write(0xff);
+	baos.write(score0);
+	baos.write(score1);
+	baos.write(serializePoint(ball.position), 0, 8);
+	baos.write(serializePoint(ball.velocity), 0, 8);
+	for (Player p : players) {
+	    baos.write(p.getId());
+	    baos.write(p.isShooting() ? 0x01 : 0x02);
+	    baos.write(serializePoint(p.position), 0, 8);
+	    baos.write(serializePoint(p.velocity), 0, 8);
 	}
+	baos.write(0x00);
 
-	public static byte[] serializeGoal (@NonNull Goal goal)
-	{
-		byte start[] = serializePoint(goal.getStart());
-		byte end[] = serializePoint(goal.getEnd());
-		return new byte[] { start[0], start[1], start[2], start[3], start[4], start[5], start[6], start[7], end[0],
-				end[1], end[2], end[3], end[4], end[5], end[6], end[7] };
-	}
-
-	public static byte[] serializeState (Ball ball, byte score0, byte score1, Collection<Player> players)
-	{
-		return serializeState(ConnectionType.NormalConnection, ball, score0, score1, players);
-	}
-
-	public static byte[] serializeState (@NonNull ConnectionType type, @NonNull Ball ball, byte score0, byte score1,
-			@NonNull Collection<Player> players)
-	{
-		if (type == ConnectionType.LaggyConnection)
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.append("{\"ball\":{\"x\":").append(ball.getPosition().getX())
-					.append(",\"y\":").append(ball.getPosition().getY())
-					.append(",\"velocity-x\":").append(ball.getVelocity().getX())
-					.append(",\"velocity-y\":").append(ball.getVelocity().getY())
-					.append("},");
-			sb.append("\"score\":{\"red\":").append(score0).append(",\"blue\":").append(score1).append("},");
-			sb.append("\"players\":[");
-			for (Player p : players)
-			{
-				sb.append("{\"id\":").append(p.getId())
-						.append(",\"x\":").append(p.getPosition().getX())
-						.append(",\"y\":").append(p.getPosition().getY())
-						.append(",\"velocity-x\":").append(p.getVelocity().getX())
-						.append(",\"velocity-y\":").append(p.getVelocity().getY());
-				sb.append("},");
-			}
-			sb.deleteCharAt(sb.length() - 1);
-			sb.append("]}\0");
-			return sb.toString().getBytes(StandardCharsets.UTF_8);
-		}
-
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		baos.write(0xff);
-		baos.write(score0);
-		baos.write(score1);
-		baos.write(serializePoint(ball.position), 0, 8);
-		baos.write(serializePoint(ball.velocity), 0, 8);
-		for (Player p : players)
-		{
-			baos.write(p.getId());
-			baos.write(p.isShooting() ? 0x01 : 0x02);
-			baos.write(serializePoint(p.position), 0, 8);
-			baos.write(serializePoint(p.velocity), 0, 8);
-		}
-		baos.write(0x00);
-
-		return baos.toByteArray();
-	}
+	return baos.toByteArray();
+    }
 }

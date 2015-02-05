@@ -42,9 +42,6 @@ public class Player extends MapObject
 	@Getter
 	private String name;
 	
-	@Getter @Setter
-	public Vector2D velocity = new Vector2D(0d, 0d);
-	
 	@Setter @Getter
 	private boolean team;
 	
@@ -53,4 +50,9 @@ public class Player extends MapObject
 
 	@Getter @Setter
 	private byte lastInput;
+
+	@Override
+	public boolean isMoveable() {
+	    return true;
+	}
 }

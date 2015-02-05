@@ -3,7 +3,6 @@ package haxball.networking;
 import haxball.util.Ball;
 import haxball.util.Dimension;
 import haxball.util.Player;
-import haxball.util.Point;
 import haxball.util.Serializer;
 
 import java.io.IOException;
@@ -20,6 +19,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class Client implements Runnable {

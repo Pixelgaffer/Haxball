@@ -26,110 +26,82 @@ import java.util.Vector;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
-@ToString @EqualsAndHashCode
-public class MapObject
-{
-	@Getter
-	public Vector2D position = new Vector2D(0d, 0d);
+@ToString
+@EqualsAndHashCode
+public abstract class MapObject {
+	public Vector2D position = new Vector2D(0, 0);
+	public Vector2D velocity = new Vector2D(0, 0);
 
-	@NonNull @Getter
+	@NonNull
+	@Getter
 	private float radius;
 
 	@NonNull
 	private Dimension fieldSize;
 
-	public float getX ()
-	{
-		return (float) position.getX();
-	}
-
-	public float getY ()
-	{
-		return (float) position.getY();
-	}
-
-	public void setX (float x)
-	{
-		if (x < 0)
-			x = 0;
-		if (x > fieldSize.getWidth())
-			x = fieldSize.getWidth();
-        position = new Vector2D((double)x, position.getY());
-	}
-
-	public void setY (float y)
-	{
-		if (y < 0)
-			y = 0;
-		if (y > fieldSize.getHeight())
-			y = fieldSize.getHeight();
-        position = new Vector2D(position.getX(), (double)y);
-	}
-
-	public void setPosition (@NonNull Point position)
-	{
-		setX(position.getX());
-		setY(position.getY());
-	}
-
-	public void setPosition (float x, float y)
-	{
-		setX(x);
-		setY(y);
-	}
-
-	public float getDistance (@NonNull MapObject other)
-	{
-		float xdist = Math.abs(getX() - other.getX());
-		float ydist = Math.abs(getY() - other.getY());
-		double dist = xdist * xdist + ydist * ydist;
-		return (float)Math.sqrt(dist);
-	}
-
-	public float getMinDistance (@NonNull MapObject other)
-	{
+	public float getCollisionDistance(@NonNull MapObject other) {
 		return (getRadius() + other.getRadius());
 	}
 
-	public boolean collidesWith (@NonNull MapObject other)
-	{
-		return (getDistance(other) > getMinDistance(other));
+	public boolean collidesWith(@NonNull MapObject other) {
+		return (position.distance(other.position) <= getCollisionDistance(other));
 	}
 
-	public void uncollide (@NonNull MapObject other)
-	{
-		float dist = getDistance(other);
-		float mindist = getMinDistance(other);
-		if (dist > mindist)
-		{
-			float distplus = (float)((dist - mindist) / 2.0);
-			float ydiff = Math.abs(getY() - other.getY()) / 2f;
-			float yminus = ydiff * distplus / dist;
-			float xminus = (float)(
-					Math.sqrt(Math.pow(dist + distplus, 2) - Math.pow(ydiff + yminus, 2))
-							- Math.abs(getX() - other.getX()) / 2.0);
+	public void setInsideMap(boolean middle) {
+		if (!isMoveable()) {
+			return;
+		}
 
-			if (getX() > other.getX())
-			{
-				setX(getX() + xminus);
-				other.setX(other.getX() - xminus);
-			}
-			else
-			{
-				setX(getX() - xminus);
-				other.setX(other.getX() + xminus);
-			}
+		float distance = middle ? 0 : radius;
 
-			if (getY() > other.getY())
-			{
-				setY(getY() + yminus);
-				other.setY(other.getY() - yminus);
+		if (position.getX() - distance < 0) {
+			position = new Vector2D(distance, position.getY());
+			velocity = new Vector2D(-velocity.getX(), velocity.getY());
+		}
+		if (position.getY() - distance < 0) {
+			position = new Vector2D(position.getX(), distance);
+			velocity = new Vector2D(velocity.getX(), -velocity.getY());
+		}
+		if (position.getX() + distance >= fieldSize.getWidth()) {
+			position = new Vector2D(fieldSize.getWidth() - distance - 1, position.getY());
+			velocity = new Vector2D(-velocity.getX(), velocity.getY());
+		}
+		if (position.getY() + distance >= fieldSize.getHeight()) {
+			position = new Vector2D(position.getX(), fieldSize.getHeight() - distance - 1);
+			velocity = new Vector2D(-velocity.getX(), -velocity.getY());
+		}
+	}
+	
+	public void uncollide(MapObject other) {
+		if (!other.isMoveable()) {
+			if (!isMoveable()) {
+				return;
 			}
-			else
-			{
-				setY(getY() - yminus);
-				other.setY(other.getY() + yminus);
+			other.uncollide(this);
+			return;
+		}
+
+		float dist = (float) position.distance(other.position);
+		float mindist = getCollisionDistance(other);
+
+		if (dist <= mindist) {
+			float overlap = mindist - dist;
+			Vector2D direction = other.position.subtract(position).normalize();
+			Vector2D sum = other.velocity.subtract(velocity);
+			if(!isMoveable()) {
+				other.position = other.position.add(direction.scalarMultiply(overlap));
+				other.velocity = other.velocity.add(sum.scalarMultiply(0.5));
+			}
+			else {
+				other.position = other.position.add(direction.scalarMultiply(overlap / 2));
+				other.velocity = other.velocity.add(sum.scalarMultiply(0.5));
+				direction = direction.negate();
+				sum = sum.negate();
+				position = position.add(direction.scalarMultiply(overlap / 2));
+				velocity = velocity.add(sum.scalarMultiply(0.5));
 			}
 		}
 	}
+
+	public abstract boolean isMoveable();
 }

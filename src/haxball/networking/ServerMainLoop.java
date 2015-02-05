@@ -83,7 +83,7 @@ public class ServerMainLoop implements Runnable
 			// Move players
 			for (Player player : players)
 			{
-                player.setVelocity(player.getVelocity().scalarMultiply(1 - friction));
+                player.velocity = player.velocity.scalarMultiply(1 - friction);
 
 				byte input = player.getLastInput();
 
@@ -126,7 +126,7 @@ public class ServerMainLoop implements Runnable
 			//System.out.println("before:\t" + ball + "; " + players);
 
 			// Check for collisions
-			/*for (Player p : players)
+			for (Player p : players)
 			{
 				// collisions between players
 				for (Player p0 : players) {
@@ -148,7 +148,7 @@ public class ServerMainLoop implements Runnable
 				}
 
 			} // for p : players
-			*/
+			
 
 
 			//System.out.println("after:\t" + ball + "; " + players);

@@ -18,30 +18,34 @@
  */
 package haxball.util;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-@ToString(callSuper = true) @EqualsAndHashCode(callSuper = true)
-public class Ball extends MapObject
-{
-	public static final float RADIUS = Player.RADIUS / 2f;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class Ball extends MapObject {
+    public static final float RADIUS = Player.RADIUS / 2f;
 
-	@Getter @Setter
-	public Vector2D velocity;
+    public Ball(@NonNull Vector2D position, Vector2D velocity, Dimension fieldSize) {
+	super(position, Vector2D.ZERO, RADIUS, fieldSize);
+	this.velocity = velocity;
+    }
 
-	public Ball (@NonNull Vector2D position, Vector2D velocity, Dimension fieldSize)
-	{
-		super(position, RADIUS, fieldSize);
-		this.velocity = velocity;
-	}
+    public Ball(Vector2D position, Dimension fieldSize) {
+	this(position, new Vector2D(0d, 0d), fieldSize);
+    }
 
-	public Ball (Vector2D position, Dimension fieldSize)
-	{
-		this(position, new Vector2D(0d, 0d), fieldSize);
-	}
+    public Ball(@NonNull Dimension fieldSize) {
+	this(new Vector2D(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Vector2D(0d, 0d), fieldSize);
+    }
 
-	public Ball (@NonNull Dimension fieldSize)
-	{
-		this(new Vector2D(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Vector2D(0d, 0d), fieldSize);
-	}
+    @Override
+    public boolean isMoveable() {
+	return true;
+    }
 }
