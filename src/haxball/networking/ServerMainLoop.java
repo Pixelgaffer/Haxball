@@ -113,21 +113,27 @@ public class ServerMainLoop implements Runnable
                 }
 
                 player.velocity = player.velocity.add(v.subtract(player.velocity).scalarMultiply(acceleration));
+                System.out.println(player.position);
+                System.out.println("-->");
                 player.position = player.position.add(player.velocity);
-			} // for player : players
+                System.out.println(player.position);
+            } // for player : players
 
 			// Move ball
             ball.velocity = ball.velocity.scalarMultiply(1-friction);
             ball.position = ball.position.add(ball.velocity);
 
-			System.out.println("before:\t" + ball + "; " + players);
+			//System.out.println("before:\t" + ball + "; " + players);
 
 			// Check for collisions
-			for (Player p : players)
+			/*for (Player p : players)
 			{
 				// collisions between players
-				for (Player p0 : players)
-					p.uncollide(p0);
+				for (Player p0 : players) {
+                    if (!p.equals(p0)) {
+                        p.uncollide(p0);
+                    }
+                }
 
 				// if a player collides with the ball, check whether he hits or just collides
 				// and move ball and if needed player
@@ -142,8 +148,10 @@ public class ServerMainLoop implements Runnable
 				}
 
 			} // for p : players
+			*/
 
-			System.out.println("after:\t" + ball + "; " + players);
+
+			//System.out.println("after:\t" + ball + "; " + players);
 
 			// send position to every connection
 			for (ConnectionHandler handler : connectionHandlers)
