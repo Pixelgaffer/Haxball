@@ -174,10 +174,10 @@ public class Client implements Runnable {
 						
 						buffer = new byte[8];
 						in.read(buffer);
-						ball.setPosition(Serializer.deserializePoint(buffer));
+                        ball.position = Serializer.deserializeVector(buffer);
 						buffer = new byte[8];
 						in.read(buffer);
-						ball.setVelocity(Serializer.deserializeVector(buffer));
+                        ball.velocity = Serializer.deserializeVector(buffer);
 						
 						while(true) {
 							buffer = new byte[1];
@@ -191,10 +191,10 @@ public class Client implements Runnable {
 							player.setShooting(buffer[0] == 0x01);
 							buffer = new byte[8];
 							in.read(buffer);
-							player.setPosition(Serializer.deserializePoint(buffer));
+                            player.position = Serializer.deserializeVector(buffer);
 							buffer = new byte[8];
 							in.read(buffer);
-							player.setVelocity(Serializer.deserializeVector(buffer));
+                            player.velocity = Serializer.deserializeVector(buffer);
 						}
 					}
 				}				
