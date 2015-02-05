@@ -103,10 +103,7 @@ public class ServerMainLoop implements Runnable {
 				}
 
 				player.velocity = player.velocity.add(v.subtract(player.velocity).scalarMultiply(acceleration));
-				System.out.println(player.position);
-				System.out.println("-->");
 				player.position = player.position.add(player.velocity);
-				System.out.println(player.position);
 			}
 
 			// Move ball

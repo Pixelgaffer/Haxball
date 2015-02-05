@@ -32,15 +32,14 @@ public class Ball extends MapObject {
     public static final float RADIUS = Player.RADIUS / 2f;
 
     public Ball(@NonNull Vector2D position, Vector2D velocity, Dimension fieldSize) {
-	super(position, Vector2D.ZERO, RADIUS, fieldSize);
-	this.velocity = velocity;
+	super(position, velocity, RADIUS, fieldSize);
     }
 
     public Ball(Vector2D position, Dimension fieldSize) {
 	this(position, new Vector2D(0d, 0d), fieldSize);
     }
 
-    public Ball(@NonNull Dimension fieldSize) {
+    public Ball(Dimension fieldSize) {
 	this(new Vector2D(fieldSize.getWidth() / 2f, fieldSize.getHeight() / 2f), new Vector2D(0d, 0d), fieldSize);
     }
 
