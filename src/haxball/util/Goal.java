@@ -18,30 +18,30 @@
  */
 package haxball.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @ToString
 public class Goal
 {
 	@NonNull @Getter @Setter
 	private Vector2D start, end;
-		
+
 	@Getter
 	private GoalPost startPost, endPost;
 	
 	@Getter
 	private float x;
 
-	public Goal(Vector2D vector2d, Vector2D vector2d2, Dimension fieldSize, float x) {
+	public Goal (Vector2D vector2d, Vector2D vector2d2, Dimension fieldSize, float x)
+	{
 		start = vector2d;
 		end = vector2d;
 		this.x = x;
@@ -59,18 +59,33 @@ public class Goal
 		};
 	}
 	
-	public List<GoalPost> getPosts() {
+	public List<GoalPost> getPosts ()
+	{
 		return new ArrayList<GoalPost>(Arrays.asList(startPost, endPost));
 	}
-	
-	public static class GoalPost extends MapObject {
 
-		protected GoalPost(Vector2D position, Dimension fieldSize) {
+	public boolean hits (MapObject object)
+	{
+		// check whether y coordinate is between start and end
+		if ((object.position.getY() <= start.getY()) ||
+				(object.position.getY() >= end.getY()))
+			return false;
+		// check that the object collides with the line
+		return ((object.position.getX() - object.getRadius() >= start.getX()) &&
+				(object.position.getX() + object.getRadius() <= start.getX()));
+	}
+	
+	public static class GoalPost extends MapObject
+	{
+
+		protected GoalPost (Vector2D position, Dimension fieldSize)
+		{
 			super(position, Vector2D.ZERO, 10, fieldSize);
 		}
 
 		@Override
-		public boolean isMoveable() {
+		public boolean isMoveable ()
+		{
 			return false;
 		}
 		
