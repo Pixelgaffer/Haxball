@@ -26,7 +26,7 @@ import lombok.ToString;
 @ToString(callSuper = true) @EqualsAndHashCode(callSuper = true)
 public class Player extends MapObject
 {
-	public static final float RADIUS = 3f / 100f;
+	public static final float RADIUS = 20f;
 
 	public Player (byte id, String name, Dimension fieldSize)
 	{

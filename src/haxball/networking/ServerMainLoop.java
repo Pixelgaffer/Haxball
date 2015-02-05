@@ -77,7 +77,6 @@ public class ServerMainLoop implements Runnable {
 		while (!stopped) {
 			// Move players
 			for (Player player : players) {
-				player.velocity = player.velocity.scalarMultiply(1 - friction);
 
 				byte input = player.getLastInput();
 
@@ -99,7 +98,7 @@ public class ServerMainLoop implements Runnable {
 
 				Vector2D v = new Vector2D(vx, vy);
 				if (v.distance(Vector2D.ZERO) > 0) {
-					v = v.normalize();
+					v = v.normalize().scalarMultiply(speed);
 				}
 
 				player.velocity = player.velocity.add(v.subtract(player.velocity).scalarMultiply(acceleration));
