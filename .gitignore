@@ -9,6 +9,9 @@
 
 *.sdf
 *.suo
+*.filters
+*.user
+
 
 *.cache
 
