@@ -13,7 +13,7 @@
                         <!--Hier kommt das Flyout-Zeugs rein-->
                         <!--Label Name="lZoom" Content="Zoom: "/>
                         <Slider Name="sZoom" Value="125" Maximum="500" Minimum="1" Interval="1" Margin="3" />-->
-                        <GroupBox>
+                        <GroupBox Header="Spieler">
                             <Grid>
                                 <Grid.RowDefinitions >
                                     <RowDefinition Height="*" />
@@ -33,32 +33,57 @@
                                 <Label Content="Spieler3" Grid.Column="0" Grid.Row="2"/>
                                 <Label Content="Spieler4" Grid.Column="0" Grid.Row="3"/>
 
-                                <CheckBox Name="checkPlayer0" Grid.Column="1" Grid.Row="0" IsChecked="True" />
-                                <CheckBox Name="checkPlayer1" Grid.Column="1" Grid.Row="1" IsChecked="True" />
-                                <CheckBox Name="checkPlayer2" Grid.Column="1" Grid.Row="2"/>
-                                <CheckBox Name="checkPlayer3" Grid.Column="1" Grid.Row="3"/>
+                                <CheckBox Name="checkPlayer0" Grid.Column="1" Grid.Row="0" IsChecked="True"  IsTabStop="False"/>
+                                <CheckBox Name="checkPlayer1" Grid.Column="1" Grid.Row="1" IsChecked="True"  IsTabStop="False"/>
+                                <CheckBox Name="checkPlayer2" Grid.Column="1" Grid.Row="2" IsTabStop="False"/>
+                                <CheckBox Name="checkPlayer3" Grid.Column="1" Grid.Row="3" IsTabStop="False"/>
 
-                                <ComboBox Name="colorPlayer0" Background="Red" Grid.Column="2" Grid.Row="0" SelectedIndex="0" Foreground="Black">
+                                <ComboBox Name="colorPlayer0" Margin="3"  Background="Blue" Grid.Column="2" Grid.Row="0" SelectedIndex="1" Foreground="White" IsTabStop="False">
                                     <ComboBoxItem Content="Rot" />
                                     <ComboBoxItem Content="Blau" />
                                 </ComboBox>
-                                <ComboBox Name="colorPlayer1" Background="Blue" Grid.Column="2" Grid.Row="1" SelectedIndex="1" Foreground="White">
+                                <ComboBox Name="colorPlayer1" Margin="3"  Background="Red" Grid.Column="2" Grid.Row="1" SelectedIndex="0" Foreground="Black" IsTabStop="False">
                                     <ComboBoxItem Content="Rot" />
                                     <ComboBoxItem Content="Blau" />
                                 </ComboBox>
-                                <ComboBox Name="colorPlayer2" Background="Red" Grid.Column="2" Grid.Row="2" SelectedIndex="0" Foreground="Black" IsEnabled="false">
+                                <ComboBox Name="colorPlayer2" Margin="3"  Background="Blue" Grid.Column="2" Grid.Row="2" SelectedIndex="1" Foreground="White" IsEnabled="false" IsTabStop="False">
                                     <ComboBoxItem Content="Rot" />
                                     <ComboBoxItem Content="Blau" />
                                 </ComboBox>
-                                <ComboBox Name="colorPlayer3" Background="Blue" Grid.Column="2" Grid.Row="3" SelectedIndex="1" Foreground="White" IsEnabled="false">
+                                <ComboBox Name="colorPlayer3" Margin="3"  Background="Red" Grid.Column="2" Grid.Row="3" SelectedIndex="0" Foreground="Black" IsEnabled="false" IsTabStop="False">
                                     <ComboBoxItem Content="Rot" />
                                     <ComboBoxItem Content="Blau" />
                                 </ComboBox>
 
                             </Grid>
                         </GroupBox>
-                        <Button Name="bMode" Content="zum Server-Modus"/>
-                        <Button Name="bServer" Content="Server starten"/>
+
+                        <Button Name="bMode" Content="zum Server-Modus" Margin="3"  IsTabStop="False"/>
+                        <Button Name="bServer" Content="Server starten" Margin="3"  IsTabStop="False"/>
+                        
+                        <GroupBox Name="gConnection" Header="Verbindung" Visibility="Collapsed" >
+                            <StackPanel >
+                                <Grid Margin="3">
+                                    <Grid.RowDefinitions >
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Content="IP-Adresse" Grid.Column="0" Grid.Row="0" Margin="3" />
+                                    <Label Content="Port" Grid.Column="0" Grid.Row="1" Margin="3" />
+
+                                    <TextBox Name="tIP" Text="10.0.4.25" Grid.Column="1" Grid.Row="0" Margin="3"  IsTabStop="False"/>
+                                    <TextBox Name="tPort" Text="8001" Grid.Column="1" Grid.Row="1" Margin="3"  IsTabStop="False"/>
+
+                                </Grid>
+
+                                <Button Name="bConnect" Content="verbinden" Margin="3" Foreground="Red"  IsTabStop="False"/>
+                            </StackPanel>
+                        </GroupBox>
                     </StackPanel>
                 </Border>
             </controls:Flyout>
@@ -67,7 +92,7 @@
 
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="bSettings" Content="Einstellungen" />
+            <Button Name="bSettings" Content="Einstellungen"  IsTabStop="False"/>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 

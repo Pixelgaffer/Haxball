@@ -14,12 +14,16 @@ Public Class MyServer
 
 
     Property address As String = "0.0.0.0"
-    Property port As Integer = 8000
+    Property port As Integer = 8001
     Property connected As Boolean = False
 
     Public Event serverConsole(s As String)
     Public Event newClient(connection As Connection)
     Public Event clientRemoved(connection As Connection)
+
+    Public Event wrongMessage(s As String)
+    Public Event gotColors(nick As Integer, colors() As Char)
+    Public Event gotKeys(nick As Integer, keys(,) As Boolean)
 
 
     Structure Connection
@@ -31,8 +35,15 @@ Public Class MyServer
         Public thread As System.Threading.Thread
     End Structure
 
+    Structure PlayerPackage
+        Public gid As Integer
+        Public pos As Point
+        Public speed As Vector
+    End Structure
 
 
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Invoke(New Action(Of String) (Sub(s) tConsole.Text &= s & VbCr), message)
+    
 
     Sub New()
         serverThread = New System.Threading.Thread(AddressOf listenToConnection)
@@ -129,29 +140,118 @@ Public Class MyServer
 
 
     Private Sub listenToMessage(ByVal c As Connection)
+
         While True
             Try
                 Dim s As String = ""
                 s = c.streamr.ReadLine()  'auf Nachricht warten, Exception bricht ab(im besten Fall)
 
+                RaiseEvent serverConsole(s)
 
-                
-
-
-            Catch
-                connections.Remove(c)
-                RaiseEvent clientRemoved(c)
-                RaiseEvent serverConsole(c.nick & " has exit.")
-                Exit While
+                evaluateMessage(c.nick, s)
+            Catch ex As Exception
+                'connections.Invoke(New Action(Of String)(Sub() connections.Remove(c)))
+                Try
+                    connections.Remove(c)
+                    RaiseEvent clientRemoved(c)
+                    RaiseEvent serverConsole(c.nick & " has exit.")
+                    Exit While
+                Catch exc As IndexOutOfRangeException
+                    RaiseEvent serverConsole("Server geschlossen")
+                    Exit While
+                End Try
             End Try
         End While
     End Sub
+
+
+    Sub evaluateMessage(nick As Integer, s As String)
+
+
+        Try
+            Dim firstSemikolon As Integer = s.IndexOf(";")
+            Dim firstLine As String = s.Substring(0, s.IndexOf(";"))
+            Dim rest As String = s.Substring(s.IndexOf(";") + 1)
+
+
+            Select Case firstLine
+                Case "colors"  ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    Dim colors(3) As Char
+                    For i = 0 To 3
+                        colors(i) = rest.Substring(rest.IndexOf(" ") + 1, 1)
+                        rest = rest.Substring(rest.IndexOf(";") + 1)
+                    Next
+                    RaiseEvent gotColors(nick, colors)
+                Case "keys"  ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    Dim keys(3, 4) As Boolean
+                    For id = 0 To 3
+                        rest = rest.Substring(rest.IndexOf(" ") + 1)
+                        For keyID = 0 To 4
+                            keys(id, keyID) = toBool(rest.Substring(keyID, 1))
+                        Next
+                    Next
+                    RaiseEvent gotKeys(nick, keys)
+
+                Case Else
+                    RaiseEvent wrongMessage(s)
+            End Select
+
+        Catch ex As ArgumentOutOfRangeException
+            RaiseEvent wrongMessage(s)
+        End Try
+
+
+    End Sub
+    Private Function toBool(i As Integer)
+        If i = 0 Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
+
+
+
+
+
+    Public Sub sendStart(size As Double)
+        sendToAllClients("start" & ";" & "size=" & size)
+    End Sub
+
+    Public Sub sendGIDs(colors() As Char)
+        Dim s As String = "gids"
+
+        For i = 0 To colors.Length - 1
+            s &= ";" & i & " " & colors(i)
+        Next
+
+        sendToAllClients(s)
+    End Sub
+
+    Public Sub sendState(packages As List(Of PlayerPackage), ballPos As Point, ballSpeed As Vector, score() As Integer)
+        Dim s As String = "state"
+        For Each pack In packages
+            s &= ";" & pack.gid & " (" & pack.pos.X & ":" & pack.pos.Y & ") (" & pack.speed.X & ":" & pack.speed.Y & ")"
+        Next
+        s &= ";" & 100 & " (" & ballPos.X & ":" & ballPos.Y & ") (" & ballSpeed.X & ":" & ballSpeed.Y & ")"
+        s &= ";" & score(0) & ":" & score(1)
+
+        sendToAllClients(s)
+    End Sub
+
+    Sub sendEnd()
+        sendToAllClients("end;")
+    End Sub
+
+
+
 
     Public Sub sendToAllClients(ByVal s As String)
         For Each c In connections ' an alle clients weitersenden.
             Try
                 c.streamw.WriteLine(s)
                 c.streamw.Flush()
+                RaiseEvent serverConsole("Server: " & s & vbLf)
             Catch
                 connections.Remove(c)
                 RaiseEvent clientRemoved(c)

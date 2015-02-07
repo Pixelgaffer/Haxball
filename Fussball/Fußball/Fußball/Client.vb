@@ -49,11 +49,13 @@ Public Class Client
 
             For i = 0 To 3
                 If i < color.Length Then
-                    s &= vbLf & i & " " & color(i)
+                    s &= ";" & i & " " & color(i)
                 Else
-                    s &= vbLf & i & " n"
+                    s &= ";" & i & " n"
                 End If
             Next
+
+            client.send(s)
         Else
             RaiseEvent notConnected()
         End If
@@ -63,7 +65,7 @@ Public Class Client
         If client.connected Then
             Dim s As String = "keys"
             For i = 0 To 3
-                s &= vbLf & i & " " & to10(keys(i, 0)) & to10(keys(i, 1)) & to10(keys(i, 2)) & to10(keys(i, 3))
+                s &= ";" & i & " " & to10(keys(i, 0)) & to10(keys(i, 1)) & to10(keys(i, 2)) & to10(keys(i, 3)) & to10(keys(i, 4))
             Next
             client.send(s)
         Else
@@ -76,8 +78,8 @@ Public Class Client
 
         Try
 
-            Dim firstLine As String = s.Substring(0, s.Length - s.IndexOf(vbLf))
-            Dim rest As String = s.Substring(s.IndexOf(vbLf) + 1)
+            Dim firstLine As String = s.Substring(0, s.IndexOf(";"))
+            Dim rest As String = s.Substring(s.IndexOf(";") + 1)
 
 
             Select Case firstLine
@@ -90,7 +92,7 @@ Public Class Client
                         Dim gid As New PlayerGID()
                         gid.gid = CInt(rest.Substring(0, rest.IndexOf(" ")))
                         gid.color = rest.Substring(rest.IndexOf(" ") + 1, 1)
-                        rest = rest.Substring(rest.IndexOf(vbLf) + 1)
+                        rest = rest.Substring(rest.IndexOf(";") + 1)
                     End While
 
                     RaiseEvent playerGIDList(list)
@@ -111,7 +113,7 @@ Public Class Client
                         Dim y2 As Double = CDbl(rest.Substring(rest.IndexOf(":") + 1, rest.IndexOf(")") - rest.IndexOf(":") - 1))
                         package.pos = New Point(x1, y1)
                         package.speed = New Vector(x2, y2)
-                        rest = rest.Substring(rest.IndexOf(vbLf) + 1)
+                        rest = rest.Substring(rest.IndexOf(";") + 1)
 
                         If package.gid = 100 Then
                             ballPos = package.pos

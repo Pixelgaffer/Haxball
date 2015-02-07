@@ -5,7 +5,7 @@
     Public ball As Ball
     Public scores(1) As Integer
 
-    Private random As New Random()
+    Public random As New Random()
 
 
 
@@ -36,6 +36,10 @@
         players.Add(New Player(size, team, random))
 
     End Sub
+    Sub addPlayer(color As Boolean)
+        Dim player As New Player(size, color, random)
+        players.Add(player)
+    End Sub
     Sub addPlayer(color As Char)
         Dim team As Boolean
         If color = "b" Then
@@ -46,7 +50,7 @@
             players.Add(New Player(False))
             Return
         End If
-        Dim player As New Player(New Point(0, 0), team)
+        Dim player As New Player(size, team, random)
         players.Add(player)
     End Sub
     Sub addPlayer(player As Player)
@@ -227,7 +231,6 @@
 
 
 
-        move()
         list.AddRange(ball.draw())
         For Each p In players
             list.AddRange(p.draw())

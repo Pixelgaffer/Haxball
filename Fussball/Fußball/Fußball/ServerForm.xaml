@@ -2,12 +2,19 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    Title="Fussball" Height="300" Width="200" GlowBrush="Gray" NonActiveGlowBrush="#FFB6B6B6">
+    Title="Fussball" Height="300" Width="500" GlowBrush="Gray" NonActiveGlowBrush="#FFB6B6B6">
     <Grid>
-        <StackPanel>
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+        
+        <TextBox Name="tConsole" />
+        
+        <StackPanel Grid.Column="1">
             <GroupBox Header="Einstellungen" >
                 <StackPanel>
-                    <Grid>
+                    <Grid Margin="3">
                         <Grid.RowDefinitions >
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -17,15 +24,15 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Content="IP-Adresse" Grid.Column="0" Grid.Row="0"/>
-                        <Label Content="Port" Grid.Column="0" Grid.Row="1"/>
+                        <Label Content="IP-Adresse" Grid.Column="0" Grid.Row="0" Margin="3" />
+                        <Label Content="Port" Grid.Column="0" Grid.Row="1" Margin="3" />
 
-                        <TextBox Text="localhost" Grid.Column="1" Grid.Row="0"/>
-                        <TextBox Text="8001" Grid.Column="1" Grid.Row="1"/>
+                        <TextBox Name="tIP" Text="0.0.0.0" Grid.Column="1" Grid.Row="0" Margin="3" />
+                        <TextBox Name="tPort" Text="8001" Grid.Column="1" Grid.Row="1" Margin="3" />
 
                     </Grid>
-                    <Button Name="bServer" Content="Server starten"/>
-                    <Button Name="bGame" Content="Spiel starten"/>
+                    <Button Name="bServer" Content="Server starten" Margin="3" />
+                    <Button Name="bGame" Content="Spiel starten" Margin="3" />
                 </StackPanel>
             </GroupBox>
         </StackPanel>

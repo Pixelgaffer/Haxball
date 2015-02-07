@@ -5,17 +5,21 @@ Public Class Player
 
 
     Property team As Boolean = False
+
     Property keyUp As Keys = Keys.W
     Property keyDown As Keys = Keys.S
     Property keyLeft As Keys = Keys.A
     Property keyRight As Keys = Keys.D
     Property keyShoot As Keys = Keys.Space
+
     Public doesShoot As Boolean = False
     Public shootDistance As Double = 35
     Public shootForce As Double = 10
     Public maxSpeed As Double = 5
-    Public moveKeyDown(3) As Boolean
     Public isVisible As Boolean = True
+
+    Public moveKeyDown(4) As Boolean
+    Public usesKeys As Boolean = True
 
 
     Private Declare Function GetAsyncKeyState Lib "user32" Alias "GetAsyncKeyState" (ByVal vKey As Keys) As Int16
@@ -61,28 +65,58 @@ Public Class Player
     End Sub
 
     Sub checkMove()
-        If isKeyPressed(keyUp) Then
-            speed.Y = -maxSpeed
-        End If
-        If isKeyPressed(keyDown) Then
-            speed.Y = maxSpeed
-        End If
-        If isKeyPressed(keyLeft) Then
-            speed.X = -maxSpeed
-        End If
-        If isKeyPressed(keyRight) Then
-            speed.X = maxSpeed
-        End If
-
-        If isKeyPressed(keyShoot) Then
-            If Not doesShoot Then
-                color.A = 150
-                doesShoot = True
+        If usesKeys Then
+            If IsKeyPressed(keyUp) Then
+                speed.Y = -maxSpeed
             End If
+            If IsKeyPressed(keyDown) Then
+                speed.Y = maxSpeed
+            End If
+            If IsKeyPressed(keyLeft) Then
+                speed.X = -maxSpeed
+            End If
+            If IsKeyPressed(keyRight) Then
+                speed.X = maxSpeed
+            End If
+
+            If IsKeyPressed(keyShoot) Then
+                If Not doesShoot Then
+                    color.A = 150
+                    doesShoot = True
+                End If
+            Else
+                If doesShoot Then
+                    color.A = 255
+                    doesShoot = False
+                End If
+            End If
+
+
+
         Else
-            If doesShoot Then
-                color.A = 255
-                doesShoot = False
+
+            If moveKeyDown(0) Then  'W
+                speed.Y = -maxSpeed
+            End If
+            If moveKeyDown(1) Then  'A
+                speed.X = -maxSpeed
+            End If
+            If moveKeyDown(2) Then  'S
+                speed.Y = maxSpeed
+            End If
+            If moveKeyDown(3) Then  'D
+                speed.X = maxSpeed
+            End If
+            If moveKeyDown(4) Then  'Schuss
+                If Not doesShoot Then
+                    color.A = 150
+                    doesShoot = True
+                End If
+            Else
+                If doesShoot Then
+                    color.A = 255
+                    doesShoot = False
+                End If
             End If
         End If
 
